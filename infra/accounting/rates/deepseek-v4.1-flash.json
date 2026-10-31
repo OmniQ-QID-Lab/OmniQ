@@ -1,0 +1,12 @@
+{
+  "label": "rate card used in the paper (DeepSeek V4.1 Flash)",
+  "unit": "USD per million tokens",
+  "uncached_input": 0.15,
+  "cached_input": 0.003,
+  "output": 0.60,
+  "notes": [
+    "output tokens include the reasoning tokens; reasoning is not billed a second time",
+    "cache writes are not billed",
+    "these are the rates the paper's costs were computed with; current prices may differ"
+  ]
+}

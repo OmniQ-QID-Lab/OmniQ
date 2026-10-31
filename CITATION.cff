@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+type: software
+title: "Residual Agents (RA)"
+abstract: >-
+  Residual Agents (RA) is a self-improving AI scientist for computational
+  quantum science. A planner splits a reproduction task into sub-plans,
+  executors carry them out, and a critic checks every result against the
+  paper; the experience gained from verified repairs is kept in planner,
+  critic and residual memories. This is the code used for the RA results of
+  the paper "Reimagining computational quantum research with AI scientists".
+version: 1.0.0
+date-released: "{{RELEASE_DATE}}"
+license: MIT
+repository-code: "https://github.com/OmniQ-QID-Lab/OmniQ"
+keywords:
+  - AI scientist
+  - LLM agents
+  - scientific reproduction
+  - computational quantum science
+# Replace this entry with one entry per author:
+#   - family-names: "..."
+#     given-names: "..."
+#     orcid: "<the author's ORCID URL>"    (optional)
+authors:
+  - name: "{{AUTHORS}}"
+preferred-citation:
+  type: article
+  title: "Reimagining computational quantum research with AI scientists"
+  authors:
+    - name: "{{AUTHORS}}"
+  journal: "arXiv preprint"
+  year: 2026
+  url: "https://arxiv.org/abs/{{ARXIV_ID}}"
+  identifiers:
+    - type: other
+      value: "arXiv:{{ARXIV_ID}}"
+      description: "arXiv identifier"

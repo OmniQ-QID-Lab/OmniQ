@@ -1,0 +1,16 @@
+# Judge image for Apptainer: the run image plus Claude Code (used by infra/judge/judge.sh --engine apptainer).
+# Build in the folder that holds ra.sif (built from apptainer.def):
+#   apptainer build ra-judge.sif infra/container/apptainer-judge.def
+# or convert the Docker image: apptainer build ra-judge.sif docker-daemon://residual-agents-judge:1.0.0
+
+Bootstrap: localimage
+From: ra.sif
+
+%post
+    CLAUDE_CODE_VERSION=2.1.281
+    export CLAUDE_CODE_VERSION
+    sh /opt/ra/infra/container/build_steps.sh judge
+
+%labels
+    org.opencontainers.image.title residual-agents-judge
+    org.opencontainers.image.version 1.0.0

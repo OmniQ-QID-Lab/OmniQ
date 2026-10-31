@@ -1,0 +1,45 @@
+# Residual Agents run image for Apptainer (the same steps as the Dockerfile's runner target, via build_steps.sh).
+# Build from the repository root (the %files paths are relative to the folder you build in):
+#   apptainer build ra.sif infra/container/apptainer.def
+# or convert the Docker image: apptainer build ra.sif docker-daemon://residual-agents:1.0.0
+# Judge image: apptainer build ra-judge.sif infra/container/apptainer-judge.def   (needs ra.sif in the same folder)
+
+Bootstrap: docker
+From: node:24-bookworm-slim
+Stage: node
+
+Bootstrap: docker
+From: python:3.11.15-trixie
+Stage: final
+
+%files from node
+    /usr/local/bin/node /usr/local/bin/node
+    /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/npm
+
+%files
+    pyproject.toml /opt/ra/pyproject.toml
+    README.md /opt/ra/README.md
+    LICENSE /opt/ra/LICENSE
+    residual_agents /opt/ra/residual_agents
+    infra /opt/ra/infra
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+    export MPLBACKEND=Agg
+    export PIP_DISABLE_PIP_VERSION_CHECK=1
+    export PYTHONDONTWRITEBYTECODE=1
+
+%post
+    export LANG=C.UTF-8 LC_ALL=C.UTF-8 PIP_DISABLE_PIP_VERSION_CHECK=1
+    sh /opt/ra/infra/container/build_steps.sh system
+    sh /opt/ra/infra/container/build_steps.sh python
+    sh /opt/ra/infra/container/build_steps.sh dsh
+    sh /opt/ra/infra/container/build_steps.sh ra
+
+%runscript
+    exec /opt/ra/infra/run/run_in_container.sh "$@"
+
+%labels
+    org.opencontainers.image.title residual-agents
+    org.opencontainers.image.version 1.0.0

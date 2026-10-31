@@ -1,0 +1,93 @@
+# Residual Agents with Docker Compose: the model proxy and the run container in one network namespace.
+# An optional alternative to infra/run/run_task.sh, which needs no Compose. Use it from the repository root:
+#   1. stage a run folder (CLAUDE.md, paper_N.pdf, skills/, ENV.md) without starting anything:
+#        infra/run/run_task.sh --dry-run --task DIR --paper PDF --paper-num N --label L --out OUT --upstream URL \
+#          --key-file KEY
+#   2. export the settings below (or write them to a .env file) and start:
+#        docker compose -f infra/run/compose.yaml up --abort-on-container-exit --exit-code-from runner
+#      with the optional egress filter (pip reaches PyPI only), add --profile egress and set
+#      RA_EGRESS_PROXY=http://127.0.0.1:3128
+#
+# Settings: RA_RUN_DIR (the staged run folder), RA_STORE_DIR and RA_HOME_DIR (empty folders outside the run folder),
+# RA_PROXY_LOG_DIR, RA_KEY_FILE, RA_UPSTREAM, RA_PAPER_NUM, RA_RUN_ID (L_pN), RA_NCPUS, RA_MEM_GB, RA_WALLTIME_SEC
+# (the wall minus 600 s), RA_UID and RA_GID (your ids, so that the files are yours); optional RA_IMAGE, RA_PROFILE,
+# RA_MODEL_FORCE, RA_PROVIDER, RA_INJECT_IDS, RA_EGRESS_PROXY.
+#
+# Topology: "proxy" holds the key (a Compose secret read from RA_KEY_FILE). "runner" shares the proxy's network
+# namespace (network_mode: service:proxy), so dsh reaches the proxy at 127.0.0.1:8500 as in the paper's runs, while
+# the key stays in the proxy's own container and PID namespace. The egress filter limits what pip can reach through
+# HTTPS_PROXY; it does not stop a program that opens sockets directly, because the runner shares a network that can
+# reach the internet. It only approximates the limited internet access of the paper's runs.
+name: residual-agents
+
+x-image: &image ${RA_IMAGE:-residual-agents:1.0.0}
+
+services:
+  proxy:
+    image: *image
+    user: "${RA_UID:-1000}:${RA_GID:-1000}"
+    command: ["python3", "-I", "-u", "/opt/ra/infra/proxy/ra_proxy.py"]
+    environment:
+      RA_PROXY_UPSTREAM: ${RA_UPSTREAM:?set RA_UPSTREAM}
+      RA_PROXY_KEY_FILE: /run/secrets/ra_proxy_key
+      RA_PROXY_PORT: "8500"
+      RA_PROXY_MODEL_FORCE: ${RA_MODEL_FORCE:-deepseek/deepseek-v4.1-flash}
+      RA_PROXY_PROVIDER: ${RA_PROVIDER:-}
+      RA_PROXY_INJECT_IDS: ${RA_INJECT_IDS:-1}
+      RA_PROXY_USAGE_LOG: /proxy_log/usage.jsonl
+    secrets:
+      - ra_proxy_key
+    volumes:
+      - ${RA_PROXY_LOG_DIR:?set RA_PROXY_LOG_DIR}:/proxy_log
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8500/health', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  egress:
+    profiles: ["egress"]
+    image: *image
+    network_mode: "service:proxy"
+    command: ["python3", "-I", "-u", "/opt/ra/infra/run/egress_proxy.py", "--listen", "127.0.0.1:3128",
+              "--allow", "pypi.org", "--allow", "files.pythonhosted.org"]
+    depends_on:
+      proxy:
+        condition: service_healthy
+
+  runner:
+    image: *image
+    network_mode: "service:proxy"
+    init: true
+    user: "${RA_UID:-1000}:${RA_GID:-1000}"
+    cpus: ${RA_NCPUS:-16}
+    mem_limit: ${RA_MEM_GB:-64}g
+    shm_size: 8g
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      proxy:
+        condition: service_healthy
+    working_dir: /workspace
+    environment:
+      PAPER_NUM: ${RA_PAPER_NUM:?set RA_PAPER_NUM}
+      RUN_ID: ${RA_RUN_ID:?set RA_RUN_ID}
+      WALLTIME_SEC: ${RA_WALLTIME_SEC:-85800}
+      PECE_NCPUS: ${RA_NCPUS:-16}
+      PECE_MEM_GB: ${RA_MEM_GB:-64}
+      RA_DSH_SHIM: "1"
+      DSH_SHIM_PORT: "8500"
+      HOME: /home/ra
+      LANG: C.UTF-8
+      HTTPS_PROXY: ${RA_EGRESS_PROXY:-}
+      HTTP_PROXY: ${RA_EGRESS_PROXY:-}
+      NO_PROXY: 127.0.0.1,localhost
+    volumes:
+      - ${RA_RUN_DIR:?set RA_RUN_DIR}:/workspace
+      - ${RA_STORE_DIR:?set RA_STORE_DIR}:/pece_store
+      - ${RA_HOME_DIR:?set RA_HOME_DIR}:/home/ra
+    command: ["/opt/ra/infra/run/run_in_container.sh", "--profile", "${RA_PROFILE:-paper}"]
+
+secrets:
+  ra_proxy_key:
+    file: ${RA_KEY_FILE:?set RA_KEY_FILE}

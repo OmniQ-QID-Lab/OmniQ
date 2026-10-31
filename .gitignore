@@ -1,0 +1,9 @@
+# local, never committed
+private/
+
+# build and test output
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.pyc

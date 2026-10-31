@@ -1,0 +1,45 @@
+#!/bin/bash
+#PBS -N ra_episode
+#PBS -q <queue>
+#PBS -A <account>
+#PBS -l select=1:ncpus=16:mem=64gb
+#PBS -l walltime=24:00:00
+#PBS -j oe
+#PBS -r n
+# One Residual Agents episode as a PBS job. A generic template: replace <queue>, <account> and the resource line with
+# your site's values (for a GPU task, for example: -l select=1:ncpus=16:mem=110gb:ngpus=1, and RA_GPU=1).
+#
+# Submit with an explicit variable list (never -V: the job must not inherit the submitting shell's environment):
+#   qsub -v RA_REPO=/path/to/residual-agents,RA_SIF=/path/to/ra.sif,RA_TASK=/path/to/task_folder,\
+#   RA_PAPER_PDF=/path/to/paper.pdf,RA_PAPER_NUM=2,RA_LABEL=myrun,RA_OUT=/path/to/runs,\
+#   RA_UPSTREAM=https://openrouter.ai/api/v1,RA_KEY_FILE=/path/to/key,RA_MEM_GB=64,RA_WALL_HOURS=24 \
+#   infra/hpc/ra_episode.pbs
+# Optional variables: RA_SM_PDF, RA_GPU=1, RA_PROFILE (paper|smoke), RA_NCPUS (default: the job's NCPUS),
+# RA_MODEL_FORCE, RA_PROVIDER, RA_EXPECT_MODEL. RA_MEM_GB and RA_WALL_HOURS must match the resource request:
+# the orchestrator plans with them (wall - 600 s), and the job's own limits are the hard stop.
+#
+# What happens on the node (all in run_task.sh): the task folder is staged into RA_OUT/paper_N/<label>_pN/, the model
+# proxy starts on the node, outside the container, holding the key; the episode runs with
+#   apptainer exec --containall --cleanenv --pid --home <fresh folder> [--nv] --env-file <explicit variables>
+# and the run folder at /workspace. "#PBS -r n": a requeue would restart the episode in the same folder; run_task.sh
+# refuses that folder, so rerun a failed episode with a new label.
+# Exit status: run_task.sh's (0 normal end, 2 configuration error, 3 infrastructure failure, 124 hard stop).
+set -euo pipefail
+# module load apptainer        # when your site provides Apptainer as an environment module
+
+: "${RA_REPO:?set RA_REPO}" "${RA_SIF:?set RA_SIF}" "${RA_TASK:?set RA_TASK}" "${RA_PAPER_PDF:?set RA_PAPER_PDF}"
+: "${RA_PAPER_NUM:?set RA_PAPER_NUM}" "${RA_LABEL:?set RA_LABEL}" "${RA_OUT:?set RA_OUT}"
+: "${RA_UPSTREAM:?set RA_UPSTREAM}" "${RA_KEY_FILE:?set RA_KEY_FILE}"
+
+args=(--engine apptainer --image "$RA_SIF" --task "$RA_TASK" --paper "$RA_PAPER_PDF" --paper-num "$RA_PAPER_NUM"
+      --label "$RA_LABEL" --out "$RA_OUT" --ncpus "${RA_NCPUS:-${NCPUS:-16}}" --mem-gb "${RA_MEM_GB:-64}"
+      --wall-hours "${RA_WALL_HOURS:-24}" --profile "${RA_PROFILE:-paper}"
+      --upstream "$RA_UPSTREAM" --key-file "$RA_KEY_FILE")
+[ -z "${RA_SM_PDF:-}" ] || args+=(--sm "$RA_SM_PDF")
+[ "${RA_GPU:-0}" != 1 ] || args+=(--gpu)
+[ -z "${RA_MODEL_FORCE:-}" ] || args+=(--model-force "$RA_MODEL_FORCE")
+[ -z "${RA_PROVIDER:-}" ] || args+=(--provider "$RA_PROVIDER")
+[ -z "${RA_EXPECT_MODEL:-}" ] || args+=(--expect-model "$RA_EXPECT_MODEL")
+
+echo "ra_episode: job ${PBS_JOBID:-?} on $(hostname -s 2>/dev/null || echo node): $RA_LABEL p$RA_PAPER_NUM"
+exec bash "$RA_REPO/infra/run/run_task.sh" "${args[@]}"

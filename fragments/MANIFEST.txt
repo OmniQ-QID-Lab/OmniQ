@@ -1,0 +1,21 @@
+# Build order of residual_agents/orchestrator.py (tools/build.py concatenates these files byte for byte).
+00_config.py
+01_util.py
+02_dsh_backend.py
+03_sessions.py
+04_procs.py
+05_calls.py
+06_clock_taskbook.py
+07_checks.py
+08_jobs.py
+09_prompts.py
+10_planner.py
+11_memory.py
+12_critic.py
+13_restart.py
+14_scouting.py
+15_readings.py
+16_pool_dag.py
+17_unit.py
+18_scheduler.py
+19_report_main.py

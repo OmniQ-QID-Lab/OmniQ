@@ -1,0 +1,11 @@
+{
+  "name": "residual-agents-dsh",
+  "private": true,
+  "description": "The dsh agent CLI at the version of the paper's runs; installed into /opt/dsh by build_steps.sh",
+  "dependencies": {
+    "@deepseek-ai/dsh": "0.1.5-rc.1"
+  },
+  "overrides": {
+    "@deepseek-ai/cordis": "4.0.2"
+  }
+}

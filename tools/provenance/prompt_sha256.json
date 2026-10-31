@@ -1,0 +1,217 @@
+{
+ "format": "ra-prompt-sha256/1",
+ "method": "str: sha256 of the UTF-8 text; tuple, list or dict: sha256 of json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':')) in UTF-8",
+ "note": "the sha256 of every prompt constant; tests and `ra verify` recompute them from residual_agents/orchestrator.py",
+ "constants": {
+  "DSH_EVIDENCE_HINT": {
+   "sha256": "f9f3314c8b74362fdb07802c7be408400e2eed0f48d093bf5da00720e0487328",
+   "type": "str",
+   "chars": 358
+  },
+  "DSH_SESSION_HINT": {
+   "sha256": "9e75add3d8ba5fa5875da26fb72f919e95627cfc0bf3a95330704ea4b26dd8d2",
+   "type": "str",
+   "chars": 346
+  },
+  "TEXT_ONLY_HINT": {
+   "sha256": "03a21680c9f9ae3f7fe609a23c73f3205472fcc4a82ae0c36ba5da84915f0899",
+   "type": "str",
+   "chars": 244
+  },
+  "EXEC_PROMPT": {
+   "sha256": "38b4f9689c7022b20553bd8af84b2e52813e726d9fcc02d212e5a4ac7cd8ea9d",
+   "type": "str",
+   "chars": 5643
+  },
+  "RESTART_PREAMBLE": {
+   "sha256": "9225196f126b9be7b5808be9f8c151784aeb36d705593177d60fd5387aacc1ae",
+   "type": "str",
+   "chars": 1140
+  },
+  "BUDGET_NOTE": {
+   "sha256": "ef1a7d8447786c96c5317a8e9f9de2531b3cbc7645bb71514a7e3f1d443f8aa6",
+   "type": "str",
+   "chars": 371
+  },
+  "FAULT_WHY": {
+   "sha256": "858e933a8d89ce05ed02d9f905dc1b4743141233b78479cdac12d3caff1ea3a7",
+   "type": "str",
+   "chars": 92
+  },
+  "CONTINUE_PROMPT": {
+   "sha256": "48ab9e538c2bc4a0c234291d59e28c1515bf506e6d694417b43c785c7201a1b0",
+   "type": "str",
+   "chars": 513
+  },
+  "FIX_PROMPT": {
+   "sha256": "b0cfad63d3f759f599328f280ad27a8277512aaa0b20ca49de585f994d58172c",
+   "type": "str",
+   "chars": 565
+  },
+  "RESUME_PROMPT": {
+   "sha256": "3f10df4fc5c27ed51cd241d48c384bbaa7f306f633f3822695fd0814c863c921",
+   "type": "str",
+   "chars": 666
+  },
+  "WRAP_FLUSH": {
+   "sha256": "c18bbefa489c3fbd3037c07e647b99bc9fdb5a35320b4caca74f9307c43de37b",
+   "type": "str",
+   "chars": 631
+  },
+  "CRITIC_PROMPT": {
+   "sha256": "6bee7a7efd4f9bbbea85c6e1bf806147d6d674554ab86aac53466edbb007b9b7",
+   "type": "str",
+   "chars": 7582
+  },
+  "CRITIC_CONTRACT": {
+   "sha256": "31fdd33c6a8853d6f83d78a490c04a44ed6888273b4f0ad0bf2d3710843f173f",
+   "type": "str",
+   "chars": 1584
+  },
+  "CRITIC_RULES": {
+   "sha256": "069186d7d9d3c211ed2f8ee36e2aea7712a0928788b23596df32fef704e12ca5",
+   "type": "str",
+   "chars": 3959
+  },
+  "CRITIC_DELTA_PROMPT": {
+   "sha256": "d9a02fc475d0d4e9bcde7994e25e246b039d32ce17bc45a3131cb849b9c7483a",
+   "type": "str",
+   "chars": 1039
+  },
+  "WRAP_CRITIC": {
+   "sha256": "868a1e501a6b65d75967ef31de42709932c06b93e59798f1e69e6fe856f2e807",
+   "type": "str",
+   "chars": 551
+  },
+  "CHECKPOINT_PROMPT": {
+   "sha256": "7448055a5b8cf703d03ad561aea7037f680e0f9aab8158b3908f611bcae8da4f",
+   "type": "str",
+   "chars": 2773
+  },
+  "WRAP_CHECK": {
+   "sha256": "5f921783b916e63f6a8330c7886ae01f21f363a4c639ce08b24ff0d94880b0d8",
+   "type": "str",
+   "chars": 387
+  },
+  "WRAP_PLAN": {
+   "sha256": "9af48fbcfe8ae30740a86e8731a5dc27d5f0290de8db59d931abeae6cc9a4df9",
+   "type": "str",
+   "chars": 204
+  },
+  "WRAP_FIN": {
+   "sha256": "8ece6c71cbb1a216475297b962c516dd6c52fe76b0381e2203ac79476e493190",
+   "type": "str",
+   "chars": 189
+  },
+  "PLAN_PROMPT": {
+   "sha256": "45155c46a845766c607cdbfd03b699dbb840e841dd7a07921aedf695aefdda47",
+   "type": "str",
+   "chars": 5988
+  },
+  "REPLAN_PROMPT": {
+   "sha256": "83b41cd998221e1e1b642b88916301b6b6021b56fbfa948c62ac2cf203984ed3",
+   "type": "str",
+   "chars": 1207
+  },
+  "PLANNER_NOTES_TITLE": {
+   "sha256": "2a18d862f6a601b18fa8a0fec780e48a71914ab6040172355ea3309b54d1baf4",
+   "type": "str",
+   "chars": 96
+  },
+  "CRITIC_NOTES_TITLE": {
+   "sha256": "73d3af1c7aa02fa5027e61b939d754f25fee17e07ddd626c12fb6e6c0e824c20",
+   "type": "str",
+   "chars": 102
+  },
+  "BANK_START_TITLE": {
+   "sha256": "6182194aad06f34a2e182094ab94e830bf2c569d9c1bbd01b6a30a24834201b0",
+   "type": "str",
+   "chars": 152
+  },
+  "BANK_ROUND_TITLE": {
+   "sha256": "392e6174deaa8de96fec430892620ce5b86e990b4e5aea5275f8ca46baf9e4af",
+   "type": "str",
+   "chars": 104
+  },
+  "BANK_REPORT_TITLE": {
+   "sha256": "49906f8bf52252346db58f20090d2441ec7224368b17a07add28318cda0d212a",
+   "type": "str",
+   "chars": 62
+  },
+  "BANK_SCOUT_TITLE": {
+   "sha256": "c531f77d1ab0e9f27e7aa9d7c048e12c2c9fe78763209857577a69be8142fea2",
+   "type": "str",
+   "chars": 91
+  },
+  "BANK_INDEX_TITLE": {
+   "sha256": "47900358dad9d1e09b85d941a4c88e95065ecfc0e176d9aa4ffa58acbeefd9d8",
+   "type": "str",
+   "chars": 248
+  },
+  "PROV_RESTART_NOTE": {
+   "sha256": "ed222c378cac826c4f176a8da6e2fcbbf1e36764f27921602bc4405621fe9e44",
+   "type": "str",
+   "chars": 240
+  },
+  "SCOUT_ANGLES": {
+   "sha256": "2788a588bf09bf81294e230cf80c487e74c76d4a74a50587dbc7be0b8887ebf0",
+   "type": "tuple",
+   "chars": 549
+  },
+  "SCOUT_PROMPT": {
+   "sha256": "a72fefe7c21379cce77009fa93b0f4a3418f9728ab0276bf22eaac82df7657d3",
+   "type": "str",
+   "chars": 2377
+  },
+  "SCOUT_WRAP": {
+   "sha256": "5b69d442b75905bb73bf7204bda0a97400f1f73dfdef40ab1219fc8130dcd6f9",
+   "type": "str",
+   "chars": 117
+  },
+  "SELECT_PROMPT": {
+   "sha256": "fc0246161a740ec6c2dd1c8f2465e9c21fdc0cc7d754bd36d057b786fdedea27",
+   "type": "str",
+   "chars": 2123
+  },
+  "SELECT_WRAP": {
+   "sha256": "fbe0cc90c176872e29b56d37f80a4baf6f9b900623d423578e2dff52c46d5575",
+   "type": "str",
+   "chars": 174
+  },
+  "DISQ_MARK": {
+   "sha256": "a1c95a15544ed6cd9bcbcf52450562b6d8e60bf3b694704a34dbbc13d6bdaf40",
+   "type": "str",
+   "chars": 142
+  },
+  "PROVISIONAL_FILE_TAG": {
+   "sha256": "eee61c7129ae58103b5d6de23dcd6d8c7e7643b1df983cacb35ba90be8812014",
+   "type": "str",
+   "chars": 222
+  },
+  "REPORT_PROMPT": {
+   "sha256": "dc6903d4d81f291bdb7b0a717b3cdfd4fc62c1415223fe321b6aa8692f889673",
+   "type": "str",
+   "chars": 3223
+  },
+  "REPORT_MODE_NORMAL": {
+   "sha256": "0ce8132c67f43eb81c823dd8ae85b155b59cd5f08dfea76cef647ea0ee1dc2c9",
+   "type": "str",
+   "chars": 167
+  },
+  "REPORT_MODE_OVERRIDE": {
+   "sha256": "2dc21f073c7e04d6cad0b0509fba053386f9902e2540600769347c10a09ac6db",
+   "type": "str",
+   "chars": 291
+  },
+  "NO_VERDICT_FIX": {
+   "sha256": "2de03d461cb86829d06bbf5aa42a4eec24dcf2f091700912d9a9f6b2d2bfc45e",
+   "type": "str",
+   "chars": 162
+  },
+  "_HOW_TEXT": {
+   "sha256": "a18cbca69648d08c295b073bc041d418c4f8d4ce2c9bdf587de8224b2713dc31",
+   "type": "dict",
+   "chars": 390
+  }
+ }
+}

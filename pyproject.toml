@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "residual-agents"
+version = "1.0.0"
+description = "Residual Agents (RA): the planner-executor-critic orchestrator used in 'Reimagining computational quantum research with AI scientists'"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [{name = "{{AUTHORS}}"}]
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.scripts]
+ra = "residual_agents.cli:main"
+
+[project.optional-dependencies]
+checks = ["numpy", "h5py", "zstandard"]
+
+[project.urls]
+Homepage = "https://github.com/OmniQ-QID-Lab/OmniQ"
+Paper = "https://arxiv.org/abs/{{ARXIV_ID}}"
+Dataset = "{{HF_DATASET_URL}}"
+
+[tool.setuptools]
+packages = ["residual_agents"]
+
+[tool.setuptools.package-data]
+residual_agents = ["memories/*.md", "profiles/*", "trace.py"]

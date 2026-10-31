@@ -1,0 +1,29 @@
+# Python packages of the Residual Agents run image: the scientific stack that ENV.md lists as pre-installed.
+#
+# Pinned versions are those the paper's runs imported, read from the runs' own outputs (version lines in reports,
+# profiles, validation files and logs of the 59 published runs; counts and examples in VERSIONS.md). During those runs
+# most of these packages were imported from a shared per-user site folder rather than from the image itself, so the
+# image's own `pip freeze` may differ.
+# Lines marked UNPINNED had no version evidence in the runs.
+#
+# Limitation: the versions follow the environment description of the runs; minor versions may differ.
+
+numpy==2.4.6            # 42 runs
+scipy==1.17.1           # 30 runs
+matplotlib==3.10.8      # 23 runs
+pandas==2.3.3           # 1 run
+sympy==1.14.0           # 1 run
+networkx==3.6.1         # 1 run
+h5py                    # UNPINNED
+qiskit==2.3.1           # 10 runs
+qiskit-aer==0.17.2      # 3 runs
+cirq-core               # UNPINNED (the one version seen in a run came from a third-party README, not the environment)
+pennylane==0.44.1       # 2 runs
+openfermion==1.7.1      # 3 runs
+pymatching              # UNPINNED
+stim==1.15.0            # 2 runs
+quimb==1.12.1           # 3 runs
+numba==0.64.0           # 6 runs; a dependency of quimb
+tensornetwork           # UNPINNED
+pyscf==2.12.1           # 2 runs
+cvxpy==1.8.1            # 2 runs

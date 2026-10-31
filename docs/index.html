@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reimagining computational quantum research with AI scientists</title>
+<meta name="description" content="OmniQ turns published studies in computational quantum science into executable reproduction tasks. Residual Agents (RA) is an open-source AI scientist that learns from verified failures. Paper, code (MIT) and all 59 RA run trajectories (CC BY 4.0).">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reimagining computational quantum research with AI scientists">
+<meta property="og:description" content="OmniQ turns published computational quantum studies into reproduction tasks; Residual Agents (RA) raises DeepSeek V4.1 Flash from 68% to 85% strict reproduction success.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='white' stroke='%23141a26' stroke-width='4'/%3E%3Ccircle cx='16' cy='16' r='6.5' fill='%234d6bfe'/%3E%3C/svg%3E">
+<style>
+/* Layout: one 68ch reading column; figures widen to the 1120px frame and sit on white cards in both themes. */
+:root {
+  --bg: #ffffff;
+  --band: #f3f5f9;
+  --ink: #141a26;
+  --ink-2: #4a5468;
+  --line: #dde2ea;
+  --accent: #2d49cf;          /* RA blue, darkened from the figures' #4d6bfe for text contrast */
+  --accent-ink: #ffffff;
+  --card: #ffffff;            /* figure cards stay white in dark mode */
+  --code: #f3f5f9;
+  --lv1: #d98a95;             /* issue levels, sampled from Fig. 2a */
+  --lv2: #c34d5b;
+  --lv3: #8c1127;
+  --lv1-ink: #2a0a10;
+  --on-red: #ffffff;
+  --sans: "Helvetica Neue", Helvetica, "Nimbus Sans", "Liberation Sans", Arial, system-ui, sans-serif;
+  --serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, "DejaVu Serif", serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace;
+  --wrap: 1120px;
+  --measure: 68ch;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e131d;
+    --band: #151c29;
+    --ink: #e7eaf1;
+    --ink-2: #a7b0c2;
+    --line: #2a3446;
+    --accent: #9db0ff;
+    --accent-ink: #0e131d;
+    --code: #151c29;
+    color-scheme: dark;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.62;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--accent); text-underline-offset: .18em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+code, pre { font-family: var(--mono); }
+code { font-size: .86em; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { font-family: var(--sans); line-height: 1.2; text-wrap: balance; margin: 0; color: var(--ink); }
+p { margin: 0; }
+sub, sup { line-height: 0; }
+
+.wrap {
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip {
+  position: absolute; left: -9999px; top: 8px;
+  background: var(--bg); color: var(--accent); padding: 8px 12px;
+  font-family: var(--sans); border: 2px solid var(--accent); border-radius: 6px; z-index: 5;
+}
+.skip:focus { left: max(16px, env(safe-area-inset-left, 0px)); }
+
+/* Header */
+.site-head { border-bottom: 1px solid var(--line); background: var(--bg); }
+.site-head .wrap { display: flex; align-items: center; gap: 18px; padding-block: 10px; }
+.brand { font-family: var(--sans); font-weight: 700; letter-spacing: .01em; color: var(--ink); text-decoration: none; white-space: nowrap; flex: none; }
+.site-head nav { min-width: 0; margin-left: auto; }
+.nav {
+  display: flex; gap: 2px 18px; list-style: none; margin: 0; padding: 0;
+  overflow-x: auto; scrollbar-width: none;
+  font-family: var(--sans); font-size: .9rem;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav a { color: var(--ink-2); text-decoration: none; white-space: nowrap; display: block; padding: 6px 0; }
+.nav a:hover { color: var(--accent); }
+@media (max-width: 680px) {
+  .site-head .wrap { flex-wrap: wrap; row-gap: 0; padding-block: 8px 6px; }
+  .site-head nav { margin-left: 0; width: 100%; }
+  .nav { flex-wrap: wrap; overflow: visible; gap: 0 16px; font-size: .88rem; }
+  .nav a { padding: 4px 0; }
+}
+
+/* Hero */
+.hero { background: var(--band); border-bottom: 1px solid var(--line); }
+.hero .wrap { padding-block: clamp(28px, 6vw, 60px) clamp(26px, 4vw, 40px); display: grid; gap: 16px; }
+.eyebrow { font-family: var(--sans); font-size: .8rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+h1 { font-size: clamp(1.8rem, 1.05rem + 3.1vw, 3.05rem); font-weight: 700; letter-spacing: -.018em; max-width: 24ch; }
+.authors { font-family: var(--sans); font-size: 1.02rem; }
+.affil { font-family: var(--sans); font-size: .92rem; color: var(--ink-2); margin-top: -10px; }
+.lede { font-size: 1.14rem; max-width: 62ch; }
+.buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.btn {
+  display: inline-flex; flex-direction: column; justify-content: center; min-width: 8.5rem;
+  padding: .5rem 1rem; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--bg); color: var(--ink); text-decoration: none; font-family: var(--sans); line-height: 1.3;
+}
+.btn strong { font-size: 1rem; }
+.btn span { font-size: .78rem; color: var(--ink-2); overflow-wrap: anywhere; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary span { color: var(--accent-ink); opacity: .86; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 12px; margin-top: 8px; }
+.stat { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 4px; align-content: start; }
+.stat .value { font-family: var(--sans); font-weight: 650; font-size: clamp(2rem, 1.5rem + 2vw, 2.55rem); line-height: 1.05; letter-spacing: -.01em; }
+.stat .value .arrow { color: var(--ink-2); font-weight: 400; }
+.stat .value .unit { font-size: .5em; font-weight: 600; letter-spacing: 0; }
+.stat .label { font-family: var(--sans); font-weight: 600; font-size: .95rem; }
+.stat .note { font-family: var(--sans); font-size: .85rem; color: var(--ink-2); line-height: 1.45; }
+
+/* Figures */
+figure { margin: 0; }
+.fig { display: grid; gap: 10px; }
+.fig .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: clamp(8px, 2vw, 22px); }
+.fig figcaption { font-family: var(--sans); font-size: .88rem; line-height: 1.5; color: var(--ink-2); max-width: 82ch; }
+.fig figcaption b { color: var(--ink); }
+.fig figcaption p + p { margin-top: .5em; }
+.open { white-space: nowrap; }
+.teaser { margin-top: clamp(24px, 4vw, 40px); }
+.fig.narrow .card { max-width: 860px; }
+
+/* Sections */
+.section { padding-block: clamp(36px, 6vw, 64px); }
+.section + .section { border-top: 1px solid var(--line); }
+.section > .wrap { display: grid; gap: 22px; }
+.section > .wrap > * { min-width: 0; }
+h2 { font-size: clamp(1.45rem, 1.1rem + 1.2vw, 1.9rem); letter-spacing: -.01em; }
+h3 { font-size: 1.22rem; }
+.sub { display: grid; gap: 18px; margin-top: 14px; }
+.prose { max-width: var(--measure); display: grid; gap: .85em; }
+.abstract { max-width: var(--measure); font-size: 1.08rem; }
+
+/* Key results */
+.findings { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+@media (min-width: 760px) { .findings { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.finding { border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: grid; gap: 6px; align-content: start; }
+.kicker { font-family: var(--sans); font-size: .74rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.finding h3 { font-size: 1.1rem; }
+.finding p { font-size: .98rem; }
+
+.levels { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.level { display: grid; grid-template-columns: minmax(8rem, 10rem) minmax(0, 1fr) minmax(0, 1fr); gap: 10px 22px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; }
+.level p { font-size: .96rem; }
+.k { display: block; font-family: var(--sans); font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 2px; }
+.chip { display: inline-block; font-family: var(--sans); font-weight: 700; font-size: .85rem; padding: 3px 10px; border-radius: 4px; }
+.lv1 { background: var(--lv1); color: var(--lv1-ink); }
+.lv2 { background: var(--lv2); color: var(--on-red); }
+.lv3 { background: var(--lv3); color: var(--on-red); }
+.count { display: block; font-family: var(--sans); font-size: .9rem; color: var(--ink-2); margin-top: 6px; }
+@media (max-width: 760px) { .level { grid-template-columns: minmax(0, 1fr); } }
+
+/* Tables */
+.table-wrap { overflow-x: auto; max-width: 44rem; }
+table { border-collapse: collapse; font-family: var(--sans); font-size: .92rem; width: 100%; }
+caption { text-align: left; font-weight: 600; padding-bottom: 8px; color: var(--ink); line-height: 1.4; }
+caption span { display: block; font-weight: 400; color: var(--ink-2); font-size: .86rem; }
+th, td { padding: 7px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+thead th { font-size: .8rem; color: var(--ink-2); font-weight: 600; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.ref td { font-weight: 600; }
+
+/* Featured runs */
+.runs { display: grid; gap: 18px; }
+.run { border: 1px solid var(--line); border-radius: 12px; padding: clamp(16px, 2.5vw, 26px); display: grid; gap: 12px; }
+.run-head { display: grid; gap: 4px; }
+.run h4 { font-size: 1.15rem; }
+.run .src { font-family: var(--sans); font-size: .88rem; color: var(--ink-2); }
+.run .text { max-width: var(--measure); }
+.pill { justify-self: start; font-family: var(--sans); font-size: .74rem; font-weight: 600; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-2); }
+.links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--sans); font-size: .92rem; }
+
+/* Code */
+.repo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 12px 28px; margin: 0; }
+.repo div { border-top: 1px solid var(--line); padding-top: 8px; }
+.repo dt { font-family: var(--mono); font-size: .9rem; }
+.repo dt a { text-underline-offset: .34em; }
+.repo dd { margin: 2px 0 0; font-size: .95rem; color: var(--ink-2); }
+pre.code {
+  margin: 0; background: var(--code); border: 1px solid var(--line); border-radius: 10px;
+  padding: 14px 16px; overflow-x: auto; font-size: .84rem; line-height: 1.6; tab-size: 4;
+}
+pre.code .c { color: var(--ink-2); }
+.bib { user-select: all; -webkit-user-select: all; cursor: text; white-space: pre-wrap; overflow-wrap: anywhere; }
+.hint { font-family: var(--sans); font-size: .85rem; color: var(--ink-2); }
+.note-box { border-left: 3px solid var(--line); padding: 2px 0 2px 14px; max-width: var(--measure); }
+
+/* Footer */
+.site-foot { border-top: 1px solid var(--line); background: var(--band); }
+.site-foot .wrap { padding-block: 28px 44px; display: grid; gap: 10px; font-family: var(--sans); font-size: .86rem; color: var(--ink-2); line-height: 1.55; }
+.site-foot p { max-width: 92ch; }
+.site-foot strong { color: var(--ink); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">OmniQ · RA</a>
+    <nav aria-label="Sections">
+      <ul class="nav">
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#method">Method</a></li>
+        <li><a href="#benchmark">Benchmark</a></li>
+        <li><a href="#trajectories">Trajectories</a></li>
+        <li><a href="#code">Code</a></li>
+        <li><a href="#citation">Cite</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" id="top" aria-labelledby="title">
+  <div class="wrap">
+    <p class="eyebrow">OmniQ · Residual Agents (RA)</p>
+    <h1 id="title">Reimagining computational quantum research with AI scientists</h1>
+    <p class="authors">{{AUTHORS}}</p>
+    <p class="affil">{{AFFILIATIONS}}</p>
+    <p class="lede">Can AI scientists drive the next wave of discovery in computational quantum science? OmniQ turns published studies into executable reproduction tasks. Residual Agents (RA), an open-source AI scientist, learns from verified failures to improve future reproductions.</p>
+    <div class="buttons">
+      <a class="btn primary" href="https://arxiv.org/abs/{{ARXIV_ID}}"><strong>Paper</strong><span>arXiv:{{ARXIV_ID}}</span></a>
+      <a class="btn" href="https://github.com/OmniQ-QID-Lab/OmniQ"><strong>Code</strong><span>GitHub · MIT licence</span></a>
+      <a class="btn" href="{{HF_DATASET_URL}}"><strong>Trajectories</strong><span>Hugging Face · CC BY 4.0</span></a>
+      <a class="btn" href="#citation"><strong>Cite</strong><span>BibTeX</span></a>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <p class="value">59</p>
+        <p class="label">reproduction tasks</p>
+        <p class="note">From 60 curated studies in computational quantum science, after one Level&nbsp;III paper was removed.</p>
+      </div>
+      <div class="stat">
+        <p class="value">68% <span class="arrow" aria-hidden="true">→</span><span class="visually-hidden"> to </span> 85%</p>
+        <p class="label">strict reproduction success</p>
+        <p class="note">DeepSeek V4.1 Flash in DeepSeek’s own agent harness (DSH), and inside RA, which runs DSH as its executor.</p>
+      </div>
+      <div class="stat">
+        <p class="value">⅓ <span class="unit">of the cost</span></p>
+        <p class="label">of Claude Code with Opus&nbsp;5</p>
+        <p class="note">RA matches it at about 85% success, for US$5.6 against US$16 per task, with a weaker base model.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <figure class="fig teaser">
+    <div class="card">
+      <img src="assets/fig1b_ra_mechanism.png" width="3127" height="1389" fetchpriority="high" decoding="async"
+           alt="RA workflow. The planner splits a paper’s reproduction task into a set of sub-plans. Each sub-plan goes to an executor, and a critic accepts or rejects its output; rejected steps go back to update the code and rerun. The judge checks whether all parts passed. With expert evaluation, the experience distiller feeds replanning rules, critic rules and guidance back to the planner, critic and executor.">
+    </div>
+    <figcaption><b>How RA works</b> (Fig.&nbsp;1b). RA splits a reproduction task into sub-plans. Executors carry them out, a critic checks each result against the paper, and failed steps are repaired or replanned. Verified repairs become reusable experience for later tasks. Paper IDs in the schematic are illustrative. <a class="open" href="assets/fig1b_ra_mechanism.png">Full-size image (PNG)</a></figcaption>
+  </figure>
+</div>
+
+<section class="section" id="abstract" aria-labelledby="h-abstract">
+  <div class="wrap">
+    <h2 id="h-abstract">Abstract</h2>
+    <p class="abstract">AI scientists are expanding automated research across scientific domains, yet their ability to turn the scientific record into a foundation for autonomous discovery remains elusive. Here we uncover a fundamental barrier to this transition and demonstrate a route to overcome it in computational quantum science, where advances shape both what we can learn from complex quantum systems and what quantum computing can ultimately deliver. To identify this barrier, we introduce OmniQ, an expert-audited virtual research environment that converts published studies into executable reproduction tasks. Across 59 papers spanning classical simulation, quantum algorithms and quantum-property characterization, we systematically evaluate five agentic systems powered by large language models and six third-party agent harnesses. Our findings reveal that current AI scientists often fail to reproduce published results, exposing a fundamental mismatch between what scientific papers communicate and what autonomous agents require. By contrast, human expert intervention can turn these failures into successful reproductions, showing that the missing information can be identified and converted into reusable research experience. Guided by this observation, we develop Residual Agents (RA), a quantum-tailored self-improving AI scientist that distils externally verified workflow repairs into such experience. RA substantially improves research performance under fixed base models and limited adaptation budgets. For example, RA raises DeepSeek V4.1 Flash performance from 68% to 85%, matching Claude Code with Opus&nbsp;5 at a third of its cost despite using a weaker base model. We integrate all reproduced results into an extensible platform built on the model context protocol, making verified research workflows directly accessible to AI scientists and allowing new scientific papers to be continuously incorporated. These results establish a new paradigm for computational quantum research, where published results become reusable scientific capabilities that support autonomous discovery.</p>
+  </div>
+</section>
+
+<section class="section" id="results" aria-labelledby="h-results">
+  <div class="wrap">
+    <h2 id="h-results">Key results</h2>
+    <div class="findings">
+      <article class="finding">
+        <p class="kicker">Scientific record</p>
+        <h3>Published studies have gaps</h3>
+        <p>An auditing agent screened 3,376 judging outcomes from many agent runs, and domain experts confirmed reproducibility issues in 18 of the 60 curated studies. In 16 of them the missing detail could be recovered from released code or expert reading (Level&nbsp;I). One needed expert inspection to resolve a localized error (Level&nbsp;II), and one could not be resolved and was removed (Level&nbsp;III).</p>
+      </article>
+      <article class="finding">
+        <p class="kicker">Frontier AI scientists</p>
+        <h3>Performance varies widely</h3>
+        <p>On the 59 tasks, Claude Code with Opus&nbsp;5.5 reproduces approximately 93%, and Codex with several frontier models exceeds 70%; Codex with GPT-6-luna reaches only about 42%. Spending more does not guarantee success: several systems that use larger inference budgets than Opus&nbsp;5.5 do worse, a “thinking more but doing less” behaviour. DSH with DeepSeek V4.1 Flash reaches approximately 68% at the lowest cost.</p>
+      </article>
+      <article class="finding">
+        <p class="kicker">Agent harnesses</p>
+        <h3>Harnesses tuned elsewhere do not transfer</h3>
+        <p>With DeepSeek V4 Pro as the base model, six third-party harnesses reproduce 11 to 28 of the 59 tasks, and none beats DeepSeek’s own harness (29). Failure analysis shows agents that declare success without validating the result against the paper, replace the required computation with a cheaper surrogate, or silently reduce the problem size.</p>
+      </article>
+      <article class="finding">
+        <p class="kicker">Residual Agents</p>
+        <h3>RA learns from verified failures</h3>
+        <p>RA raises DeepSeek V4.1 Flash from 68% to approximately 85%, at an inference cost of US$5.6 per task. That matches Claude Code with Opus&nbsp;5 and Codex with GPT-5.6-sol API, which reach approximately 85% at US$16 and US$35 per task. RA is given 24 hours per task.</p>
+      </article>
+    </div>
+
+    <div class="sub" id="levels">
+      <h3>Three levels of reproduction issues</h3>
+      <p class="prose">Experts graded every confirmed issue by its severity and by whether the scientific record can resolve it.</p>
+      <figure class="fig">
+        <div class="card">
+          <img src="assets/fig2a_issue_grid.png" width="2956" height="450" loading="lazy" decoding="async"
+               alt="Grid of the 60 curated studies in three rows: classical simulation (20), quantum algorithms (19) and property characterization (21). Eighteen are coloured: 16 at Level I, Paper 42 at Level II and Paper 60 at Level III. The other 42 had no identified problem.">
+        </div>
+        <figcaption><b>Fig.&nbsp;2a.</b> The 60 curated studies by research direction. Grey: no identified problem; increasingly dark red: Levels&nbsp;I to III. The figure labels the levels 1 to 3. <a class="open" href="assets/fig2a_issue_grid.png">Full-size image (PNG)</a></figcaption>
+      </figure>
+      <ol class="levels">
+        <li class="level">
+          <div><span class="chip lv1">Level I</span><span class="count">16 papers</span></div>
+          <p><span class="k">Definition</span>Missing methodological details that can be recovered from the released code or expert interpretation.</p>
+          <p><span class="k">Example: #46</span>Learning-based quantum error mitigation (Liao et al., Nat. Mach. Intell. 2024). The paper states that one feature is considered for the best split; the released code uses all features (<code>max_features=1.0</code>). Following the code recovers the reported extrapolation advantage.</p>
+        </li>
+        <li class="level">
+          <div><span class="chip lv2">Level II</span><span class="count">1 paper</span></div>
+          <p><span class="k">Definition</span>Localized errors in the paper that can be resolved from the code, figures or broader scientific context, but otherwise lead to reproduction discrepancies.</p>
+          <p><span class="k">Example: #42</span>Learning topological order without phase labels (Che et al., Nat. Commun. 2026). The silhouette coefficient drops from about 0.59 in the paper to 0.29 in the reproduction at circuit depth four. Recovering the reported value requires a two-step procedure that the paper does not describe.</p>
+        </li>
+        <li class="level">
+          <div><span class="chip lv3">Level III</span><span class="count">1 paper</span></div>
+          <p><span class="k">Definition</span>Fundamental inconsistencies among the context, figures and released code that cannot be resolved through expert inspection.</p>
+          <p><span class="k">Example: #60</span>Exponential concentration of quantum kernels (Thanasilp et al., Nat. Commun. 2024). The figure described as the kernel variance plots the variance of the distance <i>C</i>; at <i>n</i>&nbsp;=&nbsp;2 it reaches 0.49, above the bound of 0.25 for a kernel with values in [0,&nbsp;1]. The paper was removed from the benchmark.</p>
+        </li>
+      </ol>
+      <figure class="fig narrow" id="fig2">
+        <div class="card">
+          <img src="assets/fig2_reproduction_issues.png" width="3054" height="3804" loading="lazy" decoding="async"
+               alt="Full Fig. 2. Top: the grid of 60 studies coloured by issue level. Below, one column each for Paper 46 (Level I), Paper 42 (Level II) and Paper 60 (Level III), showing a schematic of the method, the paper’s claim, the contradiction found by the AI scientist and the experts’ edit, then plots of the published result (dashed black) against the reproduction (red). For Paper 46, following the text loses the extrapolation advantage and following the released code recovers it. For Paper 42, the fidelity-kernel silhouette falls to 0.29 against the published 0.59. For Paper 60, the plotted variance reaches 0.49 at two qubits, above the bound of 0.25, and the authors’ code gives far smaller values than the published panel at twelve qubits.">
+        </div>
+        <figcaption>
+          <p><b>Fig.&nbsp;2 | AI-assisted reproduction reveals inconsistencies in the scientific record.</b> <b>a</b>, Reproduction assessment across three directions of computational quantum science. Grey denotes studies with no identified problem, whereas increasingly dark red indicates Level I–III issues according to their severity and resolvability. <b>b</b>–<b>d</b>, Representative Level I–III cases. From top to bottom, each case shows the scientific problem, the identified reproduction issue—including the paper’s claim, the contradiction found by the AI scientist and expert feedback—and the reproduced results before and after expert correction, each compared with the original result. For the panel <b>b</b>, a machine-learning configuration discrepancy resolved using the released code. For the panel <b>c</b>, an ambiguous experimental procedure requiring expert resolution. For the panel <b>d</b>, a fundamental inconsistency between the reported quantity, released code and theoretical constraints that cannot be resolved from the available scientific record. Dashed black and solid red curves denote the reported and reproduced results, respectively.</p>
+          <p>Schematics in b–d are adapted from the source papers (Liao et al., Nat. Mach. Intell. 2024; Che et al., Nat. Commun. 2026; Thanasilp et al., Nat. Commun. 2024); ‘Paper’ curves are values read from their published figures. In c and d, the bottom row applies the paper’s procedure to the authors’ deposited data (c) and reruns the authors’ released code (d). <a class="open" href="assets/fig2_reproduction_issues.png">Full-size image (PNG)</a></p>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="method" aria-labelledby="h-method">
+  <div class="wrap">
+    <h2 id="h-method">Method</h2>
+
+    <div class="sub" id="omniq">
+      <h3>OmniQ: from a published paper to a judged reproduction</h3>
+      <figure class="fig">
+        <div class="card">
+          <img src="assets/fig1a_omniq.png" width="3200" height="2566" loading="lazy" decoding="async"
+               alt="OmniQ. Papers from classical simulation, quantum algorithms and property characterization each become two files, a task specification (Preliminary.md) and evaluation criteria (Criteria.md). In the benchmark loop, a plan agent and an execute agent reproduce the target figure, and a judge agent compares the reproduction with the published result.">
+        </div>
+        <figcaption><b>Fig.&nbsp;1a.</b> Scientific papers from three research directions are converted into reproduction tasks centred on a target figure. In OmniQ, a plan agent and an execute agent reproduce the source code and the target figure, and a judge agent compares the reproduced figure with the published one. Paper IDs in the schematic are illustrative. <a class="open" href="assets/fig1_framework.png">Full Fig.&nbsp;1 (PNG)</a></figcaption>
+      </figure>
+      <div class="prose">
+        <p>Given a full paper and a target result, an AI scientist must reconstruct the underlying method, implement and run it, and reproduce the reported outcome. Each task has two Markdown documents. The task specification guides the agent: it names the target figure and gives general guidelines and paper-specific instructions, without any expected values. The evaluation criteria are reserved for the judge: the structure of the figure, quantitative checkpoints with reference values and tolerances, and the required parameters and procedures. In the released runs these files are <code>CLAUDE.md</code> and <code>JUDGE.md</code>.</p>
+        <p>The judge, Claude Code with Opus&nbsp;4.8, receives the criteria only after the run and inspects the code, logs, data and report. Every quantitative checkpoint is mandatory, and documenting an approximation does not excuse missing one. Each issue it finds is critical or non-critical. Figures pass only when no critical issue is found, and a task succeeds only when all its target figures pass.</p>
+        <p>Tasks were built and audited in seven steps that combine expert selection, LLM drafting, runs by many agent configurations, an audit of disputed verdicts and expert review.</p>
+      </div>
+      <figure class="fig">
+        <div class="card">
+          <img src="assets/si_omniq_workflow.png" width="2625" height="909" loading="lazy" decoding="async"
+               alt="Seven-step workflow in three lanes (domain expert, agent, benchmark): 1 select a paper and target figure; 2 draft the specification and criteria; 3 revise them; 4 run and judge every agent configuration; 5 screen verdicts and audit disputes; 6 grade issues at Levels I to III and decide revisions; 7 re-judge or re-run the affected tasks.">
+        </div>
+        <figcaption><b>Workflow of OmniQ</b> (Supplementary Information, section&nbsp;B). The workflow consists of seven steps involving domain experts, agents, and benchmark evaluation, distinguished by different colors. Arrows indicate the interactions and progression between steps. <a class="open" href="assets/si_omniq_workflow.png">Full-size image (PNG)</a></figcaption>
+      </figure>
+    </div>
+
+    <div class="sub" id="ra">
+      <h3>RA: planner, executors and a critic</h3>
+      <figure class="fig narrow">
+        <div class="card">
+          <img src="assets/si_ra_workflow.svg" width="2668" height="1814" loading="lazy" decoding="async"
+               alt="RA workflow. The planner builds a dependency graph of sub-plans (panel b). For each sub-plan the executor reports to a critic, which passes it or returns it for local repair (panel a). When repair is not enough, three probe agents test diagnoses in small experiments and the critics pick a new approach by majority (panel c). Results go to the judge agent.">
+        </div>
+        <figcaption><b>Schematic of the planner, executor, and critic workflow</b> (Supplementary Information, section&nbsp;C). The planner decomposes the reproduction task into interdependent sub-plans organized in a dependency graph, while the executor and critic collaborate to execute, review, and correct each sub-plan. <b>a.</b> Local repair mechanism, where the critic returns defective results to the executor for correction. <b>b.</b> Schematic of the dependency graph constructed by the planner to organize sub-plans and their execution dependencies. Each blue circle represents a sub-plan. <b>c.</b> Experiment-driven repair mechanism, where three independent probe agents investigate failures through small experiments, followed by a majority vote among three critics to select a new approach for execution. <a class="open" href="assets/si_ra_workflow.svg">Open (SVG)</a> · <a class="open" href="assets/si_ra_workflow.png">PNG</a></figcaption>
+      </figure>
+      <div class="prose">
+        <p>The planner splits a task into sub-plans linked in a dependency graph and assigns each requirement to exactly one sub-plan, with a resource budget and completion criteria for each. Every executor works in its own session. Before full-scale runs it validates its code on the smallest exactly solvable instance and times a representative step at the largest required size; long computations run as background jobs that the orchestrator tracks.</p>
+        <p>The critic sees the paper, the task specification and the execution records, but never the evaluation criteria. It checks where every number comes from, whether the method matches the paper and whether the sub-plan is complete. It then passes the sub-plan, returns it for local repair, or calls for a new approach. Results with fabricated or untraceable numbers are not eligible for ordinary repair.</p>
+        <p>For a new approach, three probe agents each test a possible cause of the failure with a small numerical experiment. Three critic sessions discard proposals that break fixed requirements, substitute prescribed methods or rely only on better agreement with the published figure without independent validation. They rank the rest by majority vote, and a fresh executor implements the winner. When a shared interpretation changes, the sub-plans that used it are reopened and reviewed again.</p>
+      </div>
+    </div>
+
+    <div class="sub" id="experience">
+      <h3>Experience: why “residual”</h3>
+      <figure class="fig">
+        <div class="card">
+          <img src="assets/si_experience_distiller.svg" width="2800" height="969" loading="lazy" decoding="async"
+               alt="Experience distiller. Patterns from development runs (a key computation that starts too late, a critic that passes an out-of-range value, a result that is rejected, repaired and then accepted) become a wrong-plan-order lesson, a missed-check lesson and a reusable fix. After expert approval they update the planner, the critic and the residual memory, which guides the executor’s repairs.">
+        </div>
+        <figcaption><b>The scheme of the experience distiller</b> (Supplementary Information, section&nbsp;C). The distiller identifies common patterns across development runs and transforms them into reusable experience, which is incorporated into the corresponding agent memories after human expert approval. Left, three representative patterns identified across multiple runs, with stacked copies indicating that similar patterns appear in other runs. Middle, the distiller evaluates each pattern and determines which agent role can benefit from it. Right, the workflow of RA, where purple highlights components improved by accumulated experience. In particular, residual memory guides the executor in repairing failed steps. All runs are illustrated schematically. <a class="open" href="assets/si_experience_distiller.svg">Open (SVG)</a> · <a class="open" href="assets/si_experience_distiller.png">PNG</a></figcaption>
+      </figure>
+      <div class="prose">
+        <p>RA identifies the residual between failed executions and their verified corrections. Outside the reproduction runs, after each round of development experiments, an experience distiller turns these residuals into three memories: planner memory, critic memory and a residual memory of failure signatures. Each residual entry holds a description of the failure, a diagnostic check and a remedy. Lessons specific to one paper are excluded, and a human expert approves every update before it is used. During a run, the critic retrieves the matching residual entries and hands them to the executor that repairs the failed step.</p>
+        <p>The residual memory holds ten entries built from the five development tasks. The memory files ship with the code.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="benchmark" aria-labelledby="h-benchmark">
+  <div class="wrap">
+    <h2 id="h-benchmark">Benchmark</h2>
+    <div class="prose">
+      <p>Five first-party agent systems were evaluated with models from the GPT, Claude, DeepSeek, Kimi and Grok families: Codex, Claude Code, Kimi Code, Grok Build and DeepSeek Harness (DSH). Six third-party harnesses ran on DeepSeek V4 Pro: mini-swe-agent and live-swe-agent (general software), InternAgent and DeepCode (scientific reproduction), and the Huxley–Gödel Machine (HGM) and Meta-Harness (evolved harnesses). Each task counts as reproduced only when it meets the strict criterion.</p>
+      <p>Reproduction success does not increase monotonically with inference cost, and existing harnesses can even degrade performance. RA lies on the Pareto frontier between DSH with DeepSeek V4.1 Flash and Claude Code with Opus&nbsp;5.5. RA is given 24 hours per task, and the size of its marker shows its longer wall-clock time.</p>
+    </div>
+    <figure class="fig narrow">
+      <div class="card">
+        <img src="assets/fig3_benchmark.svg" width="2400" height="2640" loading="lazy" decoding="async"
+             alt="Scatter plot of strict success rate against model-inference cost per task on a log scale from US$0.5 to US$50. RA sits at about 85% and US$5.6, on the dashed Pareto frontier that runs from DeepSeek V4.1 Flash with DSH (about 68%, lowest cost) to Claude Code with Opus 5.5 (about 93%). Claude Code with Opus 5 and Codex with GPT-5.6-sol via API reach about 85% at about US$16 and US$35. The six third-party harnesses, all on DeepSeek V4 Pro, sit below DSH on the same model (49%).">
+      </div>
+      <figcaption><b>Fig.&nbsp;3 | Performance of RA for computational quantum science.</b> Reproduction success across 59 reproduction tasks is plotted against model-inference cost per task on a logarithmic scale. Marker shape denotes the agent system or harness type, marker colour denotes the underlying model family, and marker size indicates wall-clock time per task. Labels identify the corresponding model or harness. RA, the proposed self-improving AI scientist, runs DSH as its executor and is drawn as the DSH marker inside a thick black ring; the dashed line indicates the Pareto frontier between reproduction success and inference cost. Dashed rings mark GPT models accessed through an application programming interface (API). <a class="open" href="assets/fig3_benchmark.svg">Open (SVG)</a> · <a class="open" href="assets/fig3_benchmark.png">PNG</a></figcaption>
+    </figure>
+    <div class="table-wrap">
+      <table>
+        <caption>Same base model, different harness<span>Tasks reproduced out of 59 with DeepSeek V4 Pro, a text-only model (Supplementary Information, section&nbsp;D)</span></caption>
+        <thead>
+          <tr><th scope="col">Harness</th><th scope="col">Type</th><th scope="col" class="num">Reproduced</th></tr>
+        </thead>
+        <tbody>
+          <tr class="ref"><td>DSH</td><td>DeepSeek’s own agent (reference)</td><td class="num">29</td></tr>
+          <tr><td>mini-swe-agent</td><td>General software</td><td class="num">28</td></tr>
+          <tr><td>HGM</td><td>Evolved</td><td class="num">24</td></tr>
+          <tr><td>DeepCode</td><td>Scientific reproduction</td><td class="num">21</td></tr>
+          <tr><td>live-swe-agent</td><td>General software</td><td class="num">18</td></tr>
+          <tr><td>InternAgent</td><td>Scientific reproduction</td><td class="num">16</td></tr>
+          <tr><td>Meta-Harness</td><td>Evolved</td><td class="num">11</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prose">Mismatch with the paper is the most common failure for every harness, in 24 to 42 failed runs each. InternAgent produced no report in 13 of its 43 failed runs, live-swe-agent made implementation errors in 22 of 41, and Meta-Harness reduced the problem in 18 of 48.</p>
+  </div>
+</section>
+
+<section class="section" id="trajectories" aria-labelledby="h-trajectories">
+  <div class="wrap">
+    <h2 id="h-trajectories">Trajectories</h2>
+    <div class="prose">
+      <p>All 59 RA runs behind the paper’s evaluation are released on <a href="{{HF_DATASET_URL}}">Hugging Face</a> under CC BY 4.0, with each task’s specification, evaluation criteria and judge verdict. Each run holds RA’s plans, the critic’s reviews and repairs, the code and outputs of every sub-plan, the orchestrator’s event ledger and logs, the final message of every agent session, the final report and the reproduced figure. Of the 59 runs, 50 pass the strict judge.</p>
+      <p>Inside these runs, the critic rejects more than half of intermediate results, triggering repair or replanning. Of the successful tasks, 90% need at least one correction, including all 13 tasks that RA reproduces beyond DSH.</p>
+      <p>The dataset leaves out the source papers and every copy of their text, pages or figures; third-party packages, code and data that the agents downloaded, which are listed with source and licence; and large arrays, binary data and text files over 2&nbsp;MB, each listed with its size and SHA-256. Runs therefore cannot be re-judged exactly from the dataset alone.</p>
+      <p>Each task folder has a short guide, an index with one line per agent session and a list of every original file. The loader <code>ra_traj.py</code> needs only the Python standard library and reads loose and zipped files alike. Because the dataset contains the benchmark’s evaluation criteria, please keep it out of training corpora.</p>
+    </div>
+
+    <div class="sub" id="featured">
+      <h3>Featured runs</h3>
+      <p class="prose">DSH and most DeepSeek V4 Pro harnesses failed these three tasks; RA passed all three. None of the three papers had an issue in the curation audit.</p>
+      <div class="runs">
+        <article class="run">
+          <div class="run-head">
+            <p class="kicker">Sub-plan decomposition</p>
+            <h4>Paper #2: fix the target, then split the work</h4>
+            <p class="src">Tindall et al., PRX Quantum 5, 010308 (2024): tensor-network simulation of IBM’s 127-qubit kicked Ising experiment · <a href="https://arxiv.org/abs/2306.14887">arXiv:2306.14887</a></p>
+          </div>
+          <span class="pill">Strict judge: pass</span>
+          <div class="text prose">
+            <p>DSH compared the tensor-network estimate of a weight-23 observable with the exact value of the weight-17 observable, so its errors came out far larger than the published ones. RA identified the correct target observable before execution and split the task into five independently validated sub-plans, with the exact benchmark built independently of the simulation engine. When the full-scale run exposed an error in the belief-propagation code, RA corrected the affected sub-plans and kept the validated benchmark. The final errors agree with the published values to within about 2% at 15 of the 23 evaluated points.</p>
+          </div>
+          <figure class="fig">
+            <div class="card">
+              <img src="assets/si_case_paper2_decomposition.png" width="2400" height="1147" loading="lazy" decoding="async"
+                   alt="a: kicked Ising circuit and its tensor-network simulation on a heavy-hex lattice. b: error against the rotation angle theta h on a log scale. DSH’s errors, about 0.001 to 0.1, sit orders of magnitude above the published values. RA’s initial errors are closer, and RA’s final errors follow the published points, including the peak near 3 pi over 8 and the drop towards pi over 2.">
+            </div>
+            <figcaption><b>Simulation workflow and reproduction results for Paper #2</b> (Supplementary Information, section&nbsp;D). <b>a.</b> Schematic of the 127-qubit kicked Ising circuit (upper panel) and the corresponding tensor-network simulation based on belief propagation (lower panels). <b>b.</b> Comparison of the reproduction results obtained by different AI scientists with the original results from Fig.&nbsp;3(c) of Paper #2. The horizontal axis denotes the single-qubit rotation angle <i>θ</i><sub>h</sub>, while the vertical axis shows the error between the tensor-network estimate and the exact light-cone benchmark on a logarithmic scale. The labels ‘RA-Initial’ and ‘RA-Final’ denote the results obtained by RA before and after its internal corrections, respectively, while ‘DSH’ denotes the baseline reproduction using DeepSeek Harness. The label ‘Paper’ denotes the reference error values reported in the original paper. <a class="open" href="assets/si_case_paper2_decomposition.png">Full-size image (PNG)</a></figcaption>
+          </figure>
+          <p class="links"><a href="{{HF_DATASET_URL}}/blob/main/tasks/paper-02_p47/README.md">Read the run guide</a><a href="{{HF_DATASET_URL}}/tree/main/tasks/paper-02_p47">Browse the run’s files</a></p>
+        </article>
+
+        <article class="run">
+          <div class="run-head">
+            <p class="kicker">Critic-guided local repair</p>
+            <h4>Paper #35: the critic catches a broken bound</h4>
+            <p class="src">Giurgica-Tiron et al., Quantum 6, 745 (2022): low-depth algorithms for quantum amplitude estimation · <a href="https://arxiv.org/abs/2012.03348">arXiv:2012.03348</a></p>
+          </div>
+          <span class="pill">Strict judge: pass</span>
+          <div class="text prose">
+            <p>DSH found the noisy crossover at <i>ε</i><sub>C</sub>&nbsp;≈&nbsp;0.05<i>γ</i>, well below the expected scale, and still declared success; the judge failed it because the crossover fell outside the evaluation interval [0.3<i>γ</i>,&nbsp;3<i>γ</i>]. RA’s first attempt also underestimated the cost, and its executor blamed the published curve. The critic instead checked the recorded circuit depths against the method’s bound, found that the circuit-selection rule violated it, and returned the sub-plan for local repair. After the fix, the crossover moved into the evaluation interval at all three noise strengths, and the judge passed both target figures.</p>
+          </div>
+          <figure class="fig">
+            <div class="card">
+              <img src="assets/si_case_paper35_critic_repair.png" width="3200" height="980" loading="lazy" decoding="async"
+                   alt="a: amplitude-estimation circuit with depolarizing noise after the state preparation and after each amplification step. b: oracle calls against estimation error at noise strength 0.001; after the critic’s repair, RA’s cost rises by about an order of magnitude near an error of 0.0001. c: crossover error against noise strength; DSH and RA’s first attempt fall below the shaded evaluation band from 0.3 to 3 times gamma, and RA’s final crossovers lie inside it at all three noise strengths.">
+            </div>
+            <figcaption><b>Noisy amplitude estimation and critic-guided issue resolution for Paper #35</b> (Supplementary Information, section&nbsp;D). <b>a.</b> Amplitude estimation with state preparation <i>U</i> and <i>m</i><sub><i>k</i></sub>&nbsp;=&nbsp;⌊<i>k</i><sup>(1−<i>β</i>)/(2<i>β</i>)</sup>⌋ amplification steps at round <i>k</i>. Each <i>Q</i> uses two oracle calls. In this equivalent circuit representation, noise is grouped into <i>D</i><sub><i>γ</i></sub> after the initial <i>U</i> and <i>D</i><sub>2<i>γ</i></sub> after each <i>Q</i>. Here <i>D</i><sub><i>t</i></sub> denotes global depolarizing noise with the factor e<sup>−<i>t</i></sup>. <b>b.</b> Reported oracle calls <i>N</i> versus error <i>ε</i> at <i>γ</i>&nbsp;=&nbsp;10<sup>−3</sup> for the original paper, DSH and RA before and after correction. <b>c.</b> Crossover diagnostics versus noise strength. For both RA stages, <i>ε</i><sub>C</sub> is the geometric midpoint between adjacent target errors where the chosen circuit family changes between power-law and exponential schedules. Vertical bars delimit these sampled intervals. The DSH values are crossover estimates extracted from its numerically evaluated theoretical cost curves. The dashed line marks <i>ε</i><sub>C</sub>&nbsp;=&nbsp;<i>γ</i>, and the shaded region is the evaluation interval [0.3<i>γ</i>,&nbsp;3<i>γ</i>]. ‘Original paper’ points are values from Figs.&nbsp;5 and 6 of Giurgica-Tiron et al. <a class="open" href="assets/si_case_paper35_critic_repair.png">Full-size image (PNG)</a></figcaption>
+          </figure>
+          <p class="links"><a href="{{HF_DATASET_URL}}/blob/main/tasks/paper-35_p121/README.md">Read the run guide</a><a href="{{HF_DATASET_URL}}/tree/main/tasks/paper-35_p121">Browse the run’s files</a></p>
+        </article>
+
+        <article class="run">
+          <div class="run-head">
+            <p class="kicker">Experiment-driven diagnosis</p>
+            <h4>Paper #29: test the diagnosis before the repair</h4>
+            <p class="src">Rudolph et al., Nat. Commun. 14, 8367 (2023): tensor-network pretraining of parameterized quantum circuits · <a href="https://arxiv.org/abs/2208.13673">arXiv:2208.13673</a></p>
+          </div>
+          <span class="pill">Strict judge: pass</span>
+          <div class="text prose">
+            <p>DSH and RA both failed at first. The KL divergence stayed above 1 after 50 training sweeps against a target range of 0.015 to 0.03, and the transfer fidelities were 0.9641 (DSH) and 0.9777 (RA) against a required 0.990. Guided by entries from its residual memory, the critic sent three probe agents per sub-plan to test its hypotheses in small experiments. Two found errors in the tensor contractions of the gradient; one found that the circuit conversion did not follow the paper’s truncation-and-disentangling procedure. After a majority vote, RA corrected both sub-plans and reproduced the reported performance curves.</p>
+            <p class="hint">The paper’s figure for this case includes a panel from the source article, so it is not shown here.</p>
+          </div>
+          <p class="links"><a href="{{HF_DATASET_URL}}/blob/main/tasks/paper-29_p103/README.md">Read the run guide</a><a href="{{HF_DATASET_URL}}/tree/main/tasks/paper-29_p103">Browse the run’s files</a></p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="code" aria-labelledby="h-code">
+  <div class="wrap">
+    <h2 id="h-code">Code</h2>
+    <div class="prose">
+      <p>RA is open source under the MIT licence. The <a href="https://github.com/OmniQ-QID-Lab/OmniQ">repository</a> holds the RA code used in the paper’s evaluation: the orchestrator, the planner, critic and residual memories, an offline test suite, and the tools to run RA on an OmniQ task and judge the result. In the paper, RA runs DeepSeek V4.1 Flash through DSH and is given 24 hours per task.</p>
+    </div>
+    <dl class="repo">
+      <div><dt><a href="https://github.com/OmniQ-QID-Lab/OmniQ/tree/main/residual_agents">residual_agents/</a></dt><dd>The orchestrator, the <code>ra</code> command and the memory files.</dd></div>
+      <div><dt><a href="https://github.com/OmniQ-QID-Lab/OmniQ/tree/main/tests">tests/</a></dt><dd>Offline unit and end-to-end tests; no network and no API key.</dd></div>
+      <div><dt><a href="https://github.com/OmniQ-QID-Lab/OmniQ/tree/main/infra">infra/</a></dt><dd>Model proxy with token accounting, container recipe, task runner, batch-scheduler templates, judge runner and cost settlement.</dd></div>
+      <div><dt><a href="https://github.com/OmniQ-QID-Lab/OmniQ/tree/main/examples">examples/</a></dt><dd>Small synthetic task, a guide to running an OmniQ task, and a script that summarizes a published run.</dd></div>
+      <div><dt><a href="https://github.com/OmniQ-QID-Lab/OmniQ/tree/main/fragments">fragments/</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/tree/main/tools">tools/</a></dt><dd>Orchestrator source, build script and integrity data (prompt and memory hashes).</dd></div>
+      <div><dt><a href="https://github.com/OmniQ-QID-Lab/OmniQ/tree/main/docs">docs/</a></dt><dd><a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/ARCHITECTURE.md">Architecture</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/CONFIGURATION.md">configuration</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/RUNNING.md">running</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/JUDGING.md">judging</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/KNOWN_ISSUES.md">known issues</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/TRAJECTORIES.md">trajectories</a> and a <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/GLOSSARY.md">glossary</a> of the names in the code and runs.</dd></div>
+    </dl>
+    <h3>Quick start</h3>
+<pre class="code"><code><span class="c"># Install and check: no API key and no network needed (Linux)</span>
+git clone https://github.com/OmniQ-QID-Lab/OmniQ
+cd OmniQ
+python3 -m pip install -e .
+ra verify                  <span class="c"># build, prompt fingerprints, memory hashes</span>
+bash tests/run_all.sh      <span class="c"># offline unit and end-to-end tests</span>
+
+<span class="c"># Run one task in a container, through the local model proxy</span>
+docker build -f infra/container/Dockerfile --target runner -t residual-agents:1.0.0 .
+infra/run/run_task.sh --task &lt;task folder&gt; --paper &lt;your copy of the paper&gt; \
+    --paper-num N --label demo --out runs --ncpus 16 --mem-gb 128 --profile paper \
+    --upstream &lt;OpenAI-compatible endpoint, e.g. https://openrouter.ai/api/v1&gt; \
+    --key-file &lt;file that holds your API key&gt;
+
+<span class="c"># Judge the finished run with the task's criteria (needs the Claude Code CLI)</span>
+infra/judge/judge.sh --run runs/paper_N/demo_pN --judge-md &lt;JUDGE.md of the task&gt; \
+    --paper &lt;your copy of the paper&gt; --paper-num N --out verdicts \
+    --key-file &lt;file that holds your Anthropic API key&gt;</code></pre>
+    <div class="prose">
+      <p><a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/RUNNING.md">RUNNING.md</a> covers Apptainer, batch schedulers and a small synthetic task to try first; <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/JUDGING.md">JUDGING.md</a> describes the judge. Task specifications and criteria come from the trajectory dataset. The source papers are not redistributed, so bring your own copy of each paper, and keep the criteria file out of the task folder: the launcher refuses a folder that contains it.</p>
+      <p><strong>Requirements.</strong> Linux with Docker or Apptainer; an OpenAI-compatible endpoint that serves DeepSeek V4.1 Flash with image input; DSH 0.1.5-rc.1 on Node&nbsp;23.8 or later, installed in the image; the CPU cores and memory listed for each task; up to 24 hours per task.</p>
+    </div>
+    <div class="note-box prose">
+      <p><strong>Safety.</strong> Agents run with full shell permissions inside the container, so run RA only in a container. The proxy keeps the API key out of the agents’ sandbox; without the proxy, agents can read the key.</p>
+      <p><strong>Reproducing the paper.</strong> Exact re-runs are not possible: DeepSeek has since updated V4.1 Flash in place, and verdicts depend on the judge model. <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/RUNNING.md">RUNNING.md</a> and <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/JUDGING.md">JUDGING.md</a> explain the settings.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="citation" aria-labelledby="h-citation">
+  <div class="wrap">
+    <h2 id="h-citation">Citation</h2>
+    <p class="prose">If you use OmniQ, RA or the trajectories, please cite the paper.</p>
+<pre class="code bib" tabindex="0" aria-label="BibTeX entry"><code>@article{{{CITE_KEY}},
+  title         = {Reimagining computational quantum research with {AI} scientists},
+  author        = {{{AUTHORS_BIBTEX}}},
+  journal       = {arXiv preprint arXiv:{{ARXIV_ID}}},
+  eprint        = {{{ARXIV_ID}}},
+  archivePrefix = {arXiv},
+  primaryClass  = {{{ARXIV_PRIMARY_CLASS}}},
+  year          = {2026}
+}</code></pre>
+    <p class="hint">One click selects the whole entry. The repository’s <code>CITATION.cff</code> gives the same reference for the code.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p><strong>Residual Agents (RA) and OmniQ.</strong> Contact: <a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a></p>
+    <p><strong>Licences.</strong> Code: MIT. Trajectories: CC BY 4.0. Page text and figures © 2026 the authors.</p>
+    <p><strong>Credits.</strong> RA runs DeepSeek’s agent harness (DSH) as its executor. The 59 tasks are built from published studies; please cite them as well (the dataset manifest lists them). Schematics in Fig.&nbsp;2 are adapted from the source papers cited in its caption. Logos in the benchmark figure are trademarks of their owners and are used only to identify the systems evaluated. Icons: Font Awesome Free (CC BY 4.0).</p>
+  </div>
+</footer>
+</body>
+</html>

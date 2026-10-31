@@ -1,0 +1,32 @@
+{
+  "format": "ra-memory-sha256/1",
+  "set": "memories",
+  "folder": "residual_agents/memories",
+  "ledger_hash_method": "sha256 of the file's UTF-8 text after str.strip(), first 8 hex digits (what load_notes records in the ledger event notes_loaded, field notes.<name>.sha)",
+  "files": {
+    "planner_notes.md": {
+      "bytes": 3061,
+      "sha256": "0fa9638f45f819544414a90510774fa227f547b8fae5f0e3f507da750f9408e9",
+      "ledger_hash": "28d0e828",
+      "ledger_bytes": 3060
+    },
+    "critic_notes.md": {
+      "bytes": 2696,
+      "sha256": "efeb53597ab9c56f14e7ee1d9e3b039542ecb668501ee41fabed710729a9c0e3",
+      "ledger_hash": "c8521f77",
+      "ledger_bytes": 2695
+    },
+    "residual_bank.md": {
+      "bytes": 9355,
+      "sha256": "acae19dbc182ed7c1119f862140ae64658f7405cc2ac8de30de7c9487c0af43e",
+      "ledger_hash": "24ca922e",
+      "ledger_bytes": 9354
+    },
+    "libraries.md": {
+      "bytes": 4688,
+      "sha256": "31efd04c59ae5535c8f90cd66b813422db5652a59c9a1b1d84d5cf64bee23411",
+      "ledger_hash": "a3a681e8",
+      "ledger_bytes": 4687
+    }
+  }
+}
