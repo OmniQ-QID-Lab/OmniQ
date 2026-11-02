@@ -1,7 +1,6 @@
 # Residual Agents (RA)
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![arXiv](https://img.shields.io/badge/arXiv-{{ARXIV_ID}}-b31b1b.svg)](https://arxiv.org/abs/{{ARXIV_ID}})
 
 RA is a self-improving AI scientist for computational quantum science, and this repository holds the RA code used in
 the paper "Reimagining computational quantum research with AI scientists". Given a published paper and a target
@@ -11,8 +10,8 @@ result, sends it back for local repair, or calls for a new approach. Failures an
 distilled into a residual memory of failure signatures, which later runs retrieve. In the paper, RA runs DeepSeek
 V4.1 Flash through DeepSeek's agent CLI (DSH), with 24 hours per task.
 
-**Paper:** [arXiv:{{ARXIV_ID}}](https://arxiv.org/abs/{{ARXIV_ID}}) · **Project page:** {{PAGE_URL}} ·
-**Trajectories:** {{HF_DATASET_URL}}
+**Paper:** preprint coming soon · **Project page:** https://omniq-qid-lab.github.io/OmniQ/ ·
+**Trajectories:** Hugging Face, coming soon
 
 ## Contents
 
@@ -78,14 +77,11 @@ the launchers) so that the API key stays outside the container.
 ## Citation
 
 ```bibtex
-@article{{{CITE_KEY}},
-  title         = {Reimagining computational quantum research with {AI} scientists},
-  author        = {{{AUTHORS_BIBTEX}}},
-  journal       = {arXiv preprint arXiv:{{ARXIV_ID}}},
-  eprint        = {{{ARXIV_ID}}},
-  archivePrefix = {arXiv},
-  primaryClass  = {{{ARXIV_PRIMARY_CLASS}}},
-  year          = {2026}
+@misc{du2026reimagining,
+  title  = {Reimagining computational quantum research with {AI} scientists},
+  author = {Du, Yuxuan and Zhao, Hanqing and Wang, Xinbiao and Lu, Yiming and Zhang, Kaining and Tao, Dacheng},
+  note   = {Preprint},
+  year   = {2026}
 }
 ```
 

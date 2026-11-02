@@ -8,7 +8,7 @@ version = "1.0.0"
 description = "Residual Agents (RA): the planner-executor-critic orchestrator used in 'Reimagining computational quantum research with AI scientists'"
 requires-python = ">=3.8"
 license = {text = "MIT"}
-authors = [{name = "{{AUTHORS}}"}]
+authors = [{name = "Yuxuan Du, Hanqing Zhao, Xinbiao Wang, Yiming Lu, Kaining Zhang, Dacheng Tao"}]
 dependencies = []
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -24,8 +24,7 @@ checks = ["numpy", "h5py", "zstandard"]
 
 [project.urls]
 Homepage = "https://github.com/OmniQ-QID-Lab/OmniQ"
-Paper = "https://arxiv.org/abs/{{ARXIV_ID}}"
-Dataset = "{{HF_DATASET_URL}}"
+Documentation = "https://omniq-qid-lab.github.io/OmniQ/"
 
 [tool.setuptools]
 packages = ["residual_agents"]

@@ -10,7 +10,7 @@ mean cost US$5.56 per task (median US$4.35) at the paper's rate card.
 
 ## 1. Take the task from the dataset
 
-Each task folder of the trajectory dataset ({{HF_DATASET_URL}}) holds the task specification and the criteria. For
+Each task folder of the trajectory dataset (on Hugging Face, coming soon) holds the task specification and the criteria. For
 #53 the folder is `tasks/paper-53_p89/`; 89 is the task's registry id, which the run uses in its file names.
 
 - `run/CLAUDE.md`: the task specification. Copy it into a new, empty task folder, for example `omniq/paper-53/`.

@@ -1,6 +1,6 @@
 # Reading the trajectories
 
-The trajectory dataset ({{HF_DATASET_URL}}, licence CC BY 4.0) holds the 59 Residual Agents runs behind the paper's
+The trajectory dataset (Hugging Face, coming soon; licence CC BY 4.0) holds the 59 Residual Agents runs behind the paper's
 results: one run per OmniQ task, made with DeepSeek V4.1 Flash through DSH. Each run is RA's complete working folder
 plus a few generated files that make it easier to read. This page explains how the dataset maps to the code in this
 repository and how to follow a run. The terms are in [GLOSSARY.md](GLOSSARY.md).

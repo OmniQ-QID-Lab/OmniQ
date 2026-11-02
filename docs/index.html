@@ -243,13 +243,13 @@ pre.code .c { color: var(--ink-2); }
   <div class="wrap">
     <p class="eyebrow">OmniQ · Residual Agents (RA)</p>
     <h1 id="title">Reimagining computational quantum research with AI scientists</h1>
-    <p class="authors">{{AUTHORS}}</p>
-    <p class="affil">{{AFFILIATIONS}}</p>
+    <p class="authors">Yuxuan Du, Hanqing Zhao, Xinbiao Wang, Yiming Lu, Kaining Zhang, Dacheng Tao</p>
+    <p class="affil">Nanyang Technological University, Singapore</p>
     <p class="lede">Can AI scientists drive the next wave of discovery in computational quantum science? OmniQ turns published studies into executable reproduction tasks. Residual Agents (RA), an open-source AI scientist, learns from verified failures to improve future reproductions.</p>
     <div class="buttons">
-      <a class="btn primary" href="https://arxiv.org/abs/{{ARXIV_ID}}"><strong>Paper</strong><span>arXiv:{{ARXIV_ID}}</span></a>
+      <span class="btn primary"><strong>Paper</strong><span>Preprint coming soon</span></span>
       <a class="btn" href="https://github.com/OmniQ-QID-Lab/OmniQ"><strong>Code</strong><span>GitHub · MIT licence</span></a>
-      <a class="btn" href="{{HF_DATASET_URL}}"><strong>Trajectories</strong><span>Hugging Face · CC BY 4.0</span></a>
+      <span class="btn"><strong>Trajectories</strong><span>Hugging Face · coming soon</span></span>
       <a class="btn" href="#citation"><strong>Cite</strong><span>BibTeX</span></a>
     </div>
     <div class="stats">
@@ -455,7 +455,7 @@ pre.code .c { color: var(--ink-2); }
   <div class="wrap">
     <h2 id="h-trajectories">Trajectories</h2>
     <div class="prose">
-      <p>All 59 RA runs behind the paper’s evaluation are released on <a href="{{HF_DATASET_URL}}">Hugging Face</a> under CC BY 4.0, with each task’s specification, evaluation criteria and judge verdict. Each run holds RA’s plans, the critic’s reviews and repairs, the code and outputs of every sub-plan, the orchestrator’s event ledger and logs, the final message of every agent session, the final report and the reproduced figure. Of the 59 runs, 50 pass the strict judge.</p>
+      <p>All 59 RA runs behind the paper’s evaluation will be released on Hugging Face under CC BY 4.0, with each task’s specification, evaluation criteria and judge verdict. Each run holds RA’s plans, the critic’s reviews and repairs, the code and outputs of every sub-plan, the orchestrator’s event ledger and logs, the final message of every agent session, the final report and the reproduced figure. Of the 59 runs, 50 pass the strict judge.</p>
       <p>Inside these runs, the critic rejects more than half of intermediate results, triggering repair or replanning. Of the successful tasks, 90% need at least one correction, including all 13 tasks that RA reproduces beyond DSH.</p>
       <p>The dataset leaves out the source papers and every copy of their text, pages or figures; third-party packages, code and data that the agents downloaded, which are listed with source and licence; and large arrays, binary data and text files over 2&nbsp;MB, each listed with its size and SHA-256. Runs therefore cannot be re-judged exactly from the dataset alone.</p>
       <p>Each task folder has a short guide, an index with one line per agent session and a list of every original file. The loader <code>ra_traj.py</code> needs only the Python standard library and reads loose and zipped files alike. Because the dataset contains the benchmark’s evaluation criteria, please keep it out of training corpora.</p>
@@ -482,7 +482,6 @@ pre.code .c { color: var(--ink-2); }
             </div>
             <figcaption><b>Simulation workflow and reproduction results for Paper #2</b> (Supplementary Information, section&nbsp;D). <b>a.</b> Schematic of the 127-qubit kicked Ising circuit (upper panel) and the corresponding tensor-network simulation based on belief propagation (lower panels). <b>b.</b> Comparison of the reproduction results obtained by different AI scientists with the original results from Fig.&nbsp;3(c) of Paper #2. The horizontal axis denotes the single-qubit rotation angle <i>θ</i><sub>h</sub>, while the vertical axis shows the error between the tensor-network estimate and the exact light-cone benchmark on a logarithmic scale. The labels ‘RA-Initial’ and ‘RA-Final’ denote the results obtained by RA before and after its internal corrections, respectively, while ‘DSH’ denotes the baseline reproduction using DeepSeek Harness. The label ‘Paper’ denotes the reference error values reported in the original paper. <a class="open" href="assets/si_case_paper2_decomposition.png">Full-size image (PNG)</a></figcaption>
           </figure>
-          <p class="links"><a href="{{HF_DATASET_URL}}/blob/main/tasks/paper-02_p47/README.md">Read the run guide</a><a href="{{HF_DATASET_URL}}/tree/main/tasks/paper-02_p47">Browse the run’s files</a></p>
         </article>
 
         <article class="run">
@@ -502,7 +501,6 @@ pre.code .c { color: var(--ink-2); }
             </div>
             <figcaption><b>Noisy amplitude estimation and critic-guided issue resolution for Paper #35</b> (Supplementary Information, section&nbsp;D). <b>a.</b> Amplitude estimation with state preparation <i>U</i> and <i>m</i><sub><i>k</i></sub>&nbsp;=&nbsp;⌊<i>k</i><sup>(1−<i>β</i>)/(2<i>β</i>)</sup>⌋ amplification steps at round <i>k</i>. Each <i>Q</i> uses two oracle calls. In this equivalent circuit representation, noise is grouped into <i>D</i><sub><i>γ</i></sub> after the initial <i>U</i> and <i>D</i><sub>2<i>γ</i></sub> after each <i>Q</i>. Here <i>D</i><sub><i>t</i></sub> denotes global depolarizing noise with the factor e<sup>−<i>t</i></sup>. <b>b.</b> Reported oracle calls <i>N</i> versus error <i>ε</i> at <i>γ</i>&nbsp;=&nbsp;10<sup>−3</sup> for the original paper, DSH and RA before and after correction. <b>c.</b> Crossover diagnostics versus noise strength. For both RA stages, <i>ε</i><sub>C</sub> is the geometric midpoint between adjacent target errors where the chosen circuit family changes between power-law and exponential schedules. Vertical bars delimit these sampled intervals. The DSH values are crossover estimates extracted from its numerically evaluated theoretical cost curves. The dashed line marks <i>ε</i><sub>C</sub>&nbsp;=&nbsp;<i>γ</i>, and the shaded region is the evaluation interval [0.3<i>γ</i>,&nbsp;3<i>γ</i>]. ‘Original paper’ points are values from Figs.&nbsp;5 and 6 of Giurgica-Tiron et al. <a class="open" href="assets/si_case_paper35_critic_repair.png">Full-size image (PNG)</a></figcaption>
           </figure>
-          <p class="links"><a href="{{HF_DATASET_URL}}/blob/main/tasks/paper-35_p121/README.md">Read the run guide</a><a href="{{HF_DATASET_URL}}/tree/main/tasks/paper-35_p121">Browse the run’s files</a></p>
         </article>
 
         <article class="run">
@@ -516,7 +514,6 @@ pre.code .c { color: var(--ink-2); }
             <p>DSH and RA both failed at first. The KL divergence stayed above 1 after 50 training sweeps against a target range of 0.015 to 0.03, and the transfer fidelities were 0.9641 (DSH) and 0.9777 (RA) against a required 0.990. Guided by entries from its residual memory, the critic sent three probe agents per sub-plan to test its hypotheses in small experiments. Two found errors in the tensor contractions of the gradient; one found that the circuit conversion did not follow the paper’s truncation-and-disentangling procedure. After a majority vote, RA corrected both sub-plans and reproduced the reported performance curves.</p>
             <p class="hint">The paper’s figure for this case includes a panel from the source article, so it is not shown here.</p>
           </div>
-          <p class="links"><a href="{{HF_DATASET_URL}}/blob/main/tasks/paper-29_p103/README.md">Read the run guide</a><a href="{{HF_DATASET_URL}}/tree/main/tasks/paper-29_p103">Browse the run’s files</a></p>
         </article>
       </div>
     </div>
@@ -571,14 +568,11 @@ infra/judge/judge.sh --run runs/paper_N/demo_pN --judge-md &lt;JUDGE.md of the t
   <div class="wrap">
     <h2 id="h-citation">Citation</h2>
     <p class="prose">If you use OmniQ, RA or the trajectories, please cite the paper.</p>
-<pre class="code bib" tabindex="0" aria-label="BibTeX entry"><code>@article{{{CITE_KEY}},
-  title         = {Reimagining computational quantum research with {AI} scientists},
-  author        = {{{AUTHORS_BIBTEX}}},
-  journal       = {arXiv preprint arXiv:{{ARXIV_ID}}},
-  eprint        = {{{ARXIV_ID}}},
-  archivePrefix = {arXiv},
-  primaryClass  = {{{ARXIV_PRIMARY_CLASS}}},
-  year          = {2026}
+<pre class="code bib" tabindex="0" aria-label="BibTeX entry"><code>@misc{du2026reimagining,
+  title  = {Reimagining computational quantum research with {AI} scientists},
+  author = {Du, Yuxuan and Zhao, Hanqing and Wang, Xinbiao and Lu, Yiming and Zhang, Kaining and Tao, Dacheng},
+  note   = {Preprint},
+  year   = {2026}
 }</code></pre>
     <p class="hint">One click selects the whole entry. The repository’s <code>CITATION.cff</code> gives the same reference for the code.</p>
   </div>
@@ -588,7 +582,7 @@ infra/judge/judge.sh --run runs/paper_N/demo_pN --judge-md &lt;JUDGE.md of the t
 
 <footer class="site-foot">
   <div class="wrap">
-    <p><strong>Residual Agents (RA) and OmniQ.</strong> Contact: <a href="mailto:{{CONTACT_EMAIL}}">{{CONTACT_EMAIL}}</a></p>
+    <p><strong>Residual Agents (RA) and OmniQ.</strong> Questions and issues: <a href="https://github.com/OmniQ-QID-Lab/OmniQ/issues">GitHub issues</a></p>
     <p><strong>Licences.</strong> Code: MIT. Trajectories: CC BY 4.0. Page text and figures © 2026 the authors.</p>
     <p><strong>Credits.</strong> RA runs DeepSeek’s agent harness (DSH) as its executor. The 59 tasks are built from published studies; please cite them as well (the dataset manifest lists them). Schematics in Fig.&nbsp;2 are adapted from the source papers cited in its caption. Logos in the benchmark figure are trademarks of their owners and are used only to identify the systems evaluated. Icons: Font Awesome Free (CC BY 4.0).</p>
   </div>

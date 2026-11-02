@@ -10,7 +10,7 @@ abstract: >-
   critic and residual memories. This is the code used for the RA results of
   the paper "Reimagining computational quantum research with AI scientists".
 version: 1.0.0
-date-released: "{{RELEASE_DATE}}"
+date-released: "2026-11-02"
 license: MIT
 repository-code: "https://github.com/OmniQ-QID-Lab/OmniQ"
 keywords:
@@ -18,21 +18,34 @@ keywords:
   - LLM agents
   - scientific reproduction
   - computational quantum science
-# Replace this entry with one entry per author:
-#   - family-names: "..."
-#     given-names: "..."
-#     orcid: "<the author's ORCID URL>"    (optional)
 authors:
-  - name: "{{AUTHORS}}"
+  - family-names: "Du"
+    given-names: "Yuxuan"
+  - family-names: "Zhao"
+    given-names: "Hanqing"
+  - family-names: "Wang"
+    given-names: "Xinbiao"
+  - family-names: "Lu"
+    given-names: "Yiming"
+  - family-names: "Zhang"
+    given-names: "Kaining"
+  - family-names: "Tao"
+    given-names: "Dacheng"
 preferred-citation:
-  type: article
+  type: generic
   title: "Reimagining computational quantum research with AI scientists"
   authors:
-    - name: "{{AUTHORS}}"
-  journal: "arXiv preprint"
+    - family-names: "Du"
+      given-names: "Yuxuan"
+    - family-names: "Zhao"
+      given-names: "Hanqing"
+    - family-names: "Wang"
+      given-names: "Xinbiao"
+    - family-names: "Lu"
+      given-names: "Yiming"
+    - family-names: "Zhang"
+      given-names: "Kaining"
+    - family-names: "Tao"
+      given-names: "Dacheng"
+  notes: "Preprint"
   year: 2026
-  url: "https://arxiv.org/abs/{{ARXIV_ID}}"
-  identifiers:
-    - type: other
-      value: "arXiv:{{ARXIV_ID}}"
-      description: "arXiv identifier"
