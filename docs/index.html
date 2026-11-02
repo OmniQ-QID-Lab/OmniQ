@@ -189,7 +189,7 @@ a.btn:hover { border-color: var(--ink); }
 @media (max-width: 760px) { .stats { grid-template-columns: minmax(0, 1fr); } .stat { border-right: 0; border-bottom: 1px solid var(--line); padding-left: 0; } .stat:last-child { border-bottom: 0; } }
 
 /* ---------- sections ---------- */
-[id] { scroll-margin-top: 100px; }
+[id] { scroll-margin-top: calc(var(--navh, 88px) + 70px); }
 .section { padding-block: clamp(40px, 5vw, 68px); border-top: 1px solid var(--line); }
 .section.alt { background: var(--bg-2); }
 .section > .wrap { display: grid; gap: 24px; }
@@ -726,6 +726,20 @@ a:hover { text-decoration-color: currentColor; }
 .legend .lg { grid-template-columns: 11.5rem minmax(0, 1fr); }
 @media (max-width: 620px) { .legend .lg { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 560px) { .controls .seg button { font-size: 9.5px; letter-spacing: .04em; padding: 7px 7px; } }
+/* tab bar + panels (lab .tabs style) */
+:root { --navh: 88px; }
+.ptabs-wrap { position: sticky; top: var(--navh); z-index: 15; background: rgba(238, 236, 231, .92); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); margin-top: 8px; }
+.ptabs { display: flex; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.ptabs::-webkit-scrollbar { display: none; }
+.ptabs [role="tab"] { flex: none; padding: 18px 24px; font: 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; border: 0; border-right: 1px solid var(--hair); border-bottom: 2px solid transparent; background: transparent; cursor: pointer; border-radius: 0; transition: color .18s ease, background .18s ease; }
+.ptabs [role="tab"]:first-child { border-left: 1px solid var(--hair); }
+.ptabs [role="tab"]:hover { color: var(--ink); background: rgba(var(--accent-rgb), .06); }
+.ptabs [role="tab"][aria-selected="true"] { color: var(--accent); border-bottom-color: var(--ra); background: var(--card); }
+.ptabs [role="tab"]:focus-visible { outline: 2px solid var(--ra); outline-offset: -3px; }
+.section.panel { border-top: 0; }
+.section.panel:focus { outline: none; }
+@media (max-width: 640px) { .ptabs [role="tab"] { padding: 15px 16px; font-size: 10px; } .ptabs-wrap .wrap { padding-left: 0; padding-right: 0; } }
+@media print { .ptabs-wrap { display: none !important; } section.panel[hidden] { display: block !important; } }
 /* footer */
 .site-foot { background: transparent; border-top: 1px solid var(--hair); }
 .site-foot .wrap { padding-block: 30px 0; gap: 0; }
@@ -754,7 +768,7 @@ a:hover { text-decoration-color: currentColor; }
         <li><a href="#benchmark">Benchmark</a></li>
         <li><a href="#trajectories">Trajectories</a></li>
         <li><a href="#code">Code</a></li>
-        <li><a href="#citation">Cite</a></li>
+        <li><a href="#cite">Cite</a></li>
       </ul>
     </nav>
     <a class="gh" href="https://github.com/OmniQ-QID-Lab/OmniQ"><svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
@@ -774,7 +788,7 @@ a:hover { text-decoration-color: currentColor; }
       <p class="lede">Can AI scientists drive the next wave of discovery in computational quantum science? OmniQ turns published studies into executable reproduction tasks. Residual Agents (RA), an open-source AI scientist, learns from verified failures to improve future reproductions.</p>
       <div class="buttons">
         <a class="btn solid" href="https://github.com/OmniQ-QID-Lab/OmniQ">Code · GitHub · MIT licence</a>
-        <a class="btn ghost" href="#citation">Cite · BibTeX</a>
+        <a class="btn ghost" href="#cite">Cite · BibTeX</a>
         <span class="soonpill"><i class="statusdot" aria-hidden="true"></i>Paper · preprint coming soon</span>
         <span class="soonpill"><i class="statusdot" aria-hidden="true"></i>Trajectories · Hugging Face · coming soon</span>
       </div>
@@ -827,7 +841,7 @@ a:hover { text-decoration-color: currentColor; }
 
 <section class="section" id="abstract" aria-labelledby="h-abstract">
   <div class="wrap">
-    <header class="sec-head"><p class="sec-no"><b>01</b> / 05</p><h2 id="h-abstract">Abstract and key results</h2></header>
+    <header class="sec-head"><p class="sec-no">Overview</p><h2 id="h-abstract">Abstract and key results</h2></header>
     <div class="body-col">
       <p class="summary rv">OmniQ turns 59 published studies in computational quantum science into expert-audited reproduction tasks, and shows that current AI scientists often fail to reproduce published results. Residual Agents (RA) distils externally verified workflow repairs into reusable experience, so that DeepSeek V4.1 Flash matches Claude Code with Opus&nbsp;5 despite being a weaker base model.</p>
       <details class="more">
@@ -864,7 +878,7 @@ a:hover { text-decoration-color: currentColor; }
       </div>
 
       <div class="sub" id="levels">
-        <h3><span class="mono">1.1</span>Three levels of reproduction issues</h3>
+        <h3>Three levels of reproduction issues</h3>
         <p class="prose">Experts graded every confirmed issue by its severity and by whether the scientific record can resolve it.</p>
         <div class="tabs" role="tablist" aria-label="Issue levels" id="lvTabs">
           <button class="tab" role="tab" id="lvt0" aria-controls="lvp0" aria-selected="true">All 18 issues</button>
@@ -924,13 +938,24 @@ a:hover { text-decoration-color: currentColor; }
   </div>
 </section>
 
-<section class="section alt" id="method" aria-labelledby="h-method">
+<div class="ptabs-wrap" id="panels">
   <div class="wrap">
-    <header class="sec-head"><p class="sec-no"><b>02</b> / 05</p><h2 id="h-method">Method</h2><p class="dek">OmniQ turns a paper into a judged task; RA plans, executes, criticizes and remembers what fixed it.</p></header>
+    <div class="ptabs" role="tablist" aria-label="Page sections">
+      <button type="button" role="tab" id="tab-method" aria-controls="method" aria-selected="true" tabindex="0">Method</button>
+      <button type="button" role="tab" id="tab-benchmark" aria-controls="benchmark" aria-selected="false" tabindex="-1">Benchmark</button>
+      <button type="button" role="tab" id="tab-trajectories" aria-controls="trajectories" aria-selected="false" tabindex="-1">Trajectories</button>
+      <button type="button" role="tab" id="tab-code" aria-controls="code" aria-selected="false" tabindex="-1">Code &amp; citation</button>
+    </div>
+  </div>
+</div>
+
+<section class="section panel" id="method" role="tabpanel" aria-labelledby="tab-method" tabindex="-1">
+  <div class="wrap">
+    <header class="sec-head"><h2 id="h-method">Method</h2><p class="dek">OmniQ turns a paper into a judged task; RA plans, executes, criticizes and remembers what fixed it.</p></header>
     <div class="body-col">
 
       <div class="sub" id="omniq">
-        <h3><span class="mono">2.1</span>OmniQ: from a published paper to a judged reproduction</h3>
+        <h3>OmniQ: from a published paper to a judged reproduction</h3>
         <p class="prose">Given a full paper and a target result, an AI scientist must reconstruct the underlying method, implement and run it, and reproduce the reported outcome. Each task has two Markdown documents.</p>
         <div class="files">
           <div class="file agent">
@@ -987,7 +1012,7 @@ a:hover { text-decoration-color: currentColor; }
       </div>
 
       <div class="sub" id="ra">
-        <h3><span class="mono">2.2</span>RA: planner, executors and a critic</h3>
+        <h3>RA: planner, executors and a critic</h3>
         <p class="prose">Inside each run, RA coordinates a planner, executors and a critic; between runs, it distils verified repairs into memory. Select any role to see what it receives, what it does and where its output goes.</p>
         <div class="explorer rv">
           <div class="ex-diagram">
@@ -1076,7 +1101,7 @@ a:hover { text-decoration-color: currentColor; }
       </div>
 
       <div class="sub" id="experience">
-        <h3><span class="mono">2.3</span>Experience: why “residual”</h3>
+        <h3>Experience: why “residual”</h3>
         <div class="prose">
           <p>RA identifies the residual between failed executions and their verified corrections. Outside the reproduction runs, after each round of development experiments, an experience distiller turns these residuals into three memories: planner memory, critic memory and a residual memory of failure signatures. Each residual entry holds a description of the failure, a diagnostic check and a remedy. Lessons specific to one paper are excluded, and a human expert approves every update before it is used. During a run, the critic retrieves the matching residual entries and hands them to the executor that repairs the failed step. The residual memory holds ten entries built from the five development tasks; the memory files ship with the code.</p>
         </div>
@@ -1097,9 +1122,9 @@ a:hover { text-decoration-color: currentColor; }
   </div>
 </section>
 
-<section class="section" id="benchmark" aria-labelledby="h-benchmark">
+<section class="section panel" id="benchmark" role="tabpanel" aria-labelledby="tab-benchmark" tabindex="-1" hidden>
   <div class="wrap">
-    <header class="sec-head"><p class="sec-no"><b>03</b> / 05</p><h2 id="h-benchmark">Benchmark</h2><p class="dek">Reproduction success does not increase monotonically with inference cost, and existing harnesses can even degrade performance.</p></header>
+    <header class="sec-head"><h2 id="h-benchmark">Benchmark</h2><p class="dek">Reproduction success does not increase monotonically with inference cost, and existing harnesses can even degrade performance.</p></header>
     <div class="body-col">
       <div class="prose">
         <p>Five first-party agent systems (Codex, Claude Code, Kimi Code, Grok Build and DeepSeek Harness, DSH) ran models from the GPT, Claude, DeepSeek, Kimi and Grok families, and six third-party harnesses ran on DeepSeek V4 Pro: mini-swe-agent and live-swe-agent (general software), InternAgent and DeepCode (scientific reproduction), and the Huxley–Gödel Machine (HGM) and Meta-Harness (evolved harnesses). Each task counts as reproduced only when it meets the strict criterion. RA lies on the Pareto frontier between DSH with DeepSeek V4.1 Flash and Claude Code with Opus&nbsp;5.5; it is given 24 hours per task, and its larger marker shows its longer wall-clock time.</p>
@@ -1123,7 +1148,7 @@ a:hover { text-decoration-color: currentColor; }
       </figure>
 
       <div class="sub">
-        <h3><span class="mono">3.1</span>Same base model, different harness</h3>
+        <h3>Same base model, different harness</h3>
         <p class="prose small">Tasks reproduced out of 59 with DeepSeek V4 Pro, a text-only model (Supplementary Information, section&nbsp;D).</p>
         <div class="bars-row">
         <div class="bars pre rv" id="bars" role="table" aria-label="Tasks reproduced out of 59 with DeepSeek V4 Pro, by harness">
@@ -1143,9 +1168,9 @@ a:hover { text-decoration-color: currentColor; }
   </div>
 </section>
 
-<section class="section alt" id="trajectories" aria-labelledby="h-trajectories">
+<section class="section panel" id="trajectories" role="tabpanel" aria-labelledby="tab-trajectories" tabindex="-1" hidden>
   <div class="wrap">
-    <header class="sec-head"><p class="sec-no"><b>04</b> / 05</p><h2 id="h-trajectories">Trajectories</h2><p class="dek">Every RA run behind the paper’s evaluation, from plan to verdict.</p></header>
+    <header class="sec-head"><h2 id="h-trajectories">Trajectories</h2><p class="dek">Every RA run behind the paper’s evaluation, from plan to verdict.</p></header>
     <div class="body-col">
       <div class="prose">
         <p>All 59 RA runs behind the paper’s evaluation will be released on Hugging Face under CC BY 4.0, with each task’s specification, evaluation criteria and judge verdict.</p>
@@ -1153,7 +1178,7 @@ a:hover { text-decoration-color: currentColor; }
       </div>
 
       <div class="sub" id="explorer">
-        <h3><span class="mono">4.1</span>Explore the 59 runs</h3>
+        <h3>Explore the 59 runs</h3>
         <p class="prose small">Each tile is one task, grouped by research direction. Select a tile for the source paper, the strict verdict, the inference cost and the wall-clock time of its RA run.</p>
         <div class="tx rv">
           <div class="tx-controls">
@@ -1175,7 +1200,7 @@ a:hover { text-decoration-color: currentColor; }
       </div>
 
       <div class="sub" id="featured">
-        <h3><span class="mono">4.2</span>Featured runs</h3>
+        <h3>Featured runs</h3>
         <p class="prose small">DSH and most DeepSeek V4 Pro harnesses failed these three tasks; RA passed all three. None of the three papers had an issue in the curation audit.</p>
         <div class="case-tabs" role="tablist" aria-label="Featured runs" id="caseTabs">
           <button class="tab" role="tab" id="ct2" aria-controls="case2" aria-selected="true"><small>Sub-plan decomposition</small>Paper #2</button>
@@ -1270,9 +1295,9 @@ a:hover { text-decoration-color: currentColor; }
   </div>
 </section>
 
-<section class="section" id="code" aria-labelledby="h-code">
+<section class="section panel" id="code" role="tabpanel" aria-labelledby="tab-code" tabindex="-1" hidden>
   <div class="wrap">
-    <header class="sec-head"><p class="sec-no"><b>05</b> / 05</p><h2 id="h-code">Code</h2><p class="dek">RA is open source under the MIT licence.</p></header>
+    <header class="sec-head"><h2 id="h-code">Code</h2><p class="dek">RA is open source under the MIT licence.</p></header>
     <div class="body-col">
       <p class="prose">The <a href="https://github.com/OmniQ-QID-Lab/OmniQ">repository</a> holds the RA code used in the paper’s evaluation: the orchestrator, the planner, critic and residual memories, an offline test suite, and the tools to run RA on an OmniQ task and judge the result. In the paper, RA runs DeepSeek V4.1 Flash through DSH and is given 24 hours per task.</p>
       <dl class="repo">
@@ -1283,7 +1308,7 @@ a:hover { text-decoration-color: currentColor; }
         <div><dt><a href="https://github.com/OmniQ-QID-Lab/OmniQ/tree/main/fragments">fragments/</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/tree/main/tools">tools/</a></dt><dd>Orchestrator source, build script and integrity data (prompt and memory hashes).</dd></div>
         <div><dt><a href="https://github.com/OmniQ-QID-Lab/OmniQ/tree/main/docs">docs/</a></dt><dd><a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/ARCHITECTURE.md">Architecture</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/CONFIGURATION.md">configuration</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/RUNNING.md">running</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/JUDGING.md">judging</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/KNOWN_ISSUES.md">known issues</a>, <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/TRAJECTORIES.md">trajectories</a> and a <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/GLOSSARY.md">glossary</a> of the names in the code and runs.</dd></div>
       </dl>
-      <h3><span class="mono">5.1</span>Quick start</h3>
+      <h3>Quick start</h3>
       <div class="term">
         <div class="term-h"><i></i><i></i><i></i><span class="t">bash · Linux</span><button type="button" class="copy" data-copy="qs">Copy</button></div>
 <pre class="code" id="qs" tabindex="0" aria-label="Quick start commands"><code><span class="c"># Install and check: no API key and no network needed (Linux)</span>
@@ -1314,7 +1339,7 @@ infra/judge/judge.sh --run runs/paper_N/demo_pN --judge-md &lt;JUDGE.md of the t
         <div class="note-box"><p><strong>Reproducing the paper.</strong> Exact re-runs are not possible: DeepSeek has since updated V4.1 Flash in place, and verdicts depend on the judge model. <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/RUNNING.md">RUNNING.md</a> and <a href="https://github.com/OmniQ-QID-Lab/OmniQ/blob/main/docs/JUDGING.md">JUDGING.md</a> explain the settings.</p></div>
       </div>
       <div class="sub" id="citation">
-        <h3 id="h-citation"><span class="mono">5.2</span>Citation</h3>
+        <h3 id="h-citation">Citation</h3>
         <p class="prose small">If you use OmniQ, RA or the trajectories, please cite the paper.</p>
       <div class="term">
           <div class="term-h"><i></i><i></i><i></i><span class="t">BibTeX</span><button type="button" class="copy" data-copy="bib">Copy</button></div>
@@ -1368,15 +1393,25 @@ infra/judge/judge.sh --run runs/paper_N/demo_pN --judge-md &lt;JUDGE.md of the t
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
   /* ---------- scroll progress + scrollspy ---------- */
-  var prog = $("#progress"), links = $$(".nav a"), secs = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
+  var prog = $("#progress"), links = $$(".nav a");
+  var PANELS = ["method", "benchmark", "trajectories", "code"];
+  function panelOf(el) { var p = el && el.closest ? el.closest('[role="tabpanel"].panel') : null; return p ? p.id : null; }
   function onScroll() {
     var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
     prog.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
-    var cur = -1;
-    secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top < 120) cur = i; });
-    links.forEach(function (a, i) { a.classList.toggle("on", i === cur); if (i === cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+    var bar = document.getElementById("panels"), inPanels = bar && bar.getBoundingClientRect().top <= navH() + 2, act = (document.querySelector('.ptabs [aria-selected="true"]') || {}).getAttribute ? document.querySelector('.ptabs [aria-selected="true"]').getAttribute("aria-controls") : null;
+    var cur = null;
+    if (inPanels) cur = act;
+    else ["abstract", "results"].forEach(function (id) { var s = document.getElementById(id); if (s && s.getBoundingClientRect().top < 160) cur = id; });
+    links.forEach(function (a) {
+      var t = a.getAttribute("href").slice(1), id = t === "cite" ? "code" : t, on = id === cur && !(t === "cite");
+      a.classList.toggle("on", on); if (on) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+    });
   }
-  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  function navH() { var hd = document.querySelector(".site-head"); return hd ? hd.offsetHeight : 88; }
+  function setNavH() { document.documentElement.style.setProperty("--navh", navH() + "px"); }
+  setNavH(); window.addEventListener("resize", setNavH);
+  window.addEventListener("scroll", onScroll, { passive: true });
 
   /* ---------- reveal on scroll ---------- */
   var onView = function (els, fn, opts) {
@@ -1776,7 +1811,7 @@ infra/judge/judge.sh --run runs/paper_N/demo_pN --judge-md &lt;JUDGE.md of the t
   $$("#txColor button").forEach(function (b) { b.addEventListener("click", function () { st.c = b.dataset.c; $$("#txColor button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); paint(); }); });
   $("#txSort").addEventListener("change", function (e) { st.sort = e.target.value; paint(); });
   paint(); detail();
-  function selectTask(n, from) { st.sel = n; backTo = from || null; if (st.q || st.v !== "all") { st.q = ""; sIn.value = ""; st.v = "all"; $$("#txVerdict button").forEach(function (x) { x.setAttribute("aria-pressed", x.dataset.v === "all"); }); } paint(); detail(); $("#explorer").scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "start" }); setTimeout(function () { tiles[n].focus({ preventScroll: true }); }, RM ? 0 : 600); }
+  function selectTask(n, from) { if (window.__omniTabs) window.__omniTabs.open("trajectories", true); st.sel = n; backTo = from || null; if (st.q || st.v !== "all") { st.q = ""; sIn.value = ""; st.v = "all"; $$("#txVerdict button").forEach(function (x) { x.setAttribute("aria-pressed", x.dataset.v === "all"); }); } paint(); detail(); $("#explorer").scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "start" }); setTimeout(function () { tiles[n].focus({ preventScroll: true }); }, RM ? 0 : 600); }
 
   /* ---------- issue grid (Fig. 2a) ---------- */
   (function () {
@@ -1827,6 +1862,90 @@ infra/judge/judge.sh --run runs/paper_N/demo_pN --judge-md &lt;JUDGE.md of the t
   $("#lbClose").addEventListener("click", function () { lb.close(); });
   lb.addEventListener("click", function (e) { if (e.target === lb) lb.close(); });
   lb.addEventListener("close", function () { if (lastZoom) lastZoom.focus(); });
+
+  /* ---------- panel tabs + hash routing ---------- */
+  (function () {
+    var tabEls = $$('.ptabs [role="tab"]'), list = $(".ptabs"), bar = $("#panels"), lastRoute = "", lastAt = 0;
+    var onShow = { benchmark: function () { drawChart(); } };
+    function stuck() { return bar.getBoundingClientRect().top <= navH() + 2; }
+    function activate(id, focusTab) {
+      if (PANELS.indexOf(id) < 0) return;
+      tabEls.forEach(function (t) { var on = t.getAttribute("aria-controls") === id; t.setAttribute("aria-selected", on ? "true" : "false"); t.tabIndex = on ? 0 : -1; });
+      PANELS.forEach(function (pid) { var el = document.getElementById(pid); if (el) el.hidden = pid !== id; });
+      var t = document.getElementById("tab-" + id);
+      if (focusTab) t.focus({ preventScroll: true });
+      var left = t.offsetLeft - list.offsetLeft, want = left - (list.clientWidth - t.offsetWidth) / 2;
+      if (left < list.scrollLeft || left + t.offsetWidth > list.scrollLeft + list.clientWidth) list.scrollLeft = Math.max(0, want);
+      hideTip();
+      if (onShow[id]) onShow[id]();
+      onScroll();
+    }
+    function scrollY_(y, smooth) { window.scrollTo({ top: Math.max(0, y), behavior: smooth && !RM ? "smooth" : "auto" }); }
+    function toBar(smooth) { scrollY_(bar.getBoundingClientRect().top + window.scrollY - navH(), smooth); }
+    function toEl(el, smooth) { scrollY_(el.getBoundingClientRect().top + window.scrollY - navH() - bar.offsetHeight - 14, smooth); }
+    function route(hash, smooth) {
+      var h = (hash || "").replace(/^#/, "");
+      if (!h) return false;
+      if (h === "cite") { activate("code"); toEl(document.getElementById("citation"), smooth); return true; }
+      var el = document.getElementById(h); if (!el) return false;
+      var pid = PANELS.indexOf(h) >= 0 ? h : panelOf(el);
+      if (!pid) return false;
+      activate(pid);
+      if (PANELS.indexOf(h) >= 0) toBar(smooth); else toEl(el, smooth);
+      return true;
+    }
+    function onNav() {
+      var now = Date.now();
+      if (location.hash === lastRoute && now - lastAt < 80) return;
+      lastRoute = location.hash; lastAt = now;
+      route(location.hash, false);
+    }
+    window.addEventListener("hashchange", onNav);
+    window.addEventListener("popstate", onNav);
+    function go(hash, smooth) { if (location.hash !== hash) history.pushState(null, "", hash); lastRoute = location.hash; lastAt = Date.now(); route(hash, smooth); }
+    // tabs: click and keys (automatic activation)
+    tabEls.forEach(function (t, i) {
+      t.addEventListener("click", function () {
+        var id = t.getAttribute("aria-controls"), was = stuck();
+        activate(id);
+        if (location.hash !== "#" + id) history.pushState(null, "", "#" + id);
+        if (was) toBar(false);
+      });
+      t.addEventListener("keydown", function (e) {
+        var k = e.key, n = -1;
+        if (k === "ArrowRight") n = (i + 1) % tabEls.length; else if (k === "ArrowLeft") n = (i - 1 + tabEls.length) % tabEls.length;
+        else if (k === "Home") n = 0; else if (k === "End") n = tabEls.length - 1;
+        if (n < 0) return;
+        e.preventDefault();
+        var id = tabEls[n].getAttribute("aria-controls");
+        activate(id, true); history.replaceState(null, "", "#" + id);
+      });
+    });
+    // in-page links that point into a panel (header nav, Cite button, any other)
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      var h = a.getAttribute("href"), id = h.slice(1);
+      if (!id) return;
+      var el = document.getElementById(id);
+      if (id !== "cite" && !(el && (PANELS.indexOf(id) >= 0 || panelOf(el)))) return;
+      e.preventDefault();
+      go(h, true);
+      if (PANELS.indexOf(id) >= 0) { var t = document.getElementById("tab-" + id); setTimeout(function () { t.focus({ preventScroll: true }); }, RM ? 0 : 450); }
+    });
+    window.__omniTabs = { open: function (id, push) { activate(id); if (push && location.hash !== "#" + id) history.pushState(null, "", "#" + id); } };
+    // initial route
+    function initial() { if (!location.hash) { onScroll(); return; } lastRoute = location.hash; lastAt = Date.now(); if (!route(location.hash, false)) onScroll(); }
+    requestAnimationFrame(initial);
+    // fonts and images above the panels change the layout after first paint: settle the deep link again, unless the reader has scrolled
+    var y0 = null, userMoved = false;
+    window.addEventListener("wheel", function () { userMoved = true; }, { passive: true, once: true });
+    window.addEventListener("touchstart", function () { userMoved = true; }, { passive: true, once: true });
+    window.addEventListener("keydown", function () { userMoved = true; }, { once: true });
+    function settle() { if (!userMoved && location.hash) initial(); }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(settle);
+    window.addEventListener("load", function () { settle(); setTimeout(settle, 250); });
+  })();
 })();
 </script>
 </body>
