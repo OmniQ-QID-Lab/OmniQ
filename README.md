@@ -10,7 +10,7 @@ result, sends it back for local repair, or calls for a new approach. Failures an
 distilled into a residual memory of failure signatures, which later runs retrieve. In the paper, RA runs DeepSeek
 V4.1 Flash through DeepSeek's agent CLI (DSH), with 24 hours per task.
 
-**Paper:** preprint coming soon · **Project page:** https://omniq-qid-lab.github.io/OmniQ/ ·
+**Paper:** [arXiv:2611.02833](https://arxiv.org/abs/2611.02833) · **Project page:** https://omniq-qid-lab.github.io/OmniQ/ ·
 **Trajectories:** Hugging Face, coming soon
 
 ## Contents
@@ -77,11 +77,14 @@ the launchers) so that the API key stays outside the container.
 ## Citation
 
 ```bibtex
-@misc{du2026reimagining,
-  title  = {Reimagining computational quantum research with {AI} scientists},
-  author = {Du, Yuxuan and Zhao, Hanqing and Wang, Xinbiao and Lu, Yiming and Zhang, Kaining and Tao, Dacheng},
-  note   = {Preprint},
-  year   = {2026}
+@article{du2026reimagining,
+  title         = {Reimagining computational quantum research with {AI} scientists},
+  author        = {Du, Yuxuan and Zhao, Hanqing and Wang, Xinbiao and Lu, Yiming and Zhang, Kaining and Tao, Dacheng},
+  journal       = {arXiv preprint arXiv:2611.02833},
+  eprint        = {2611.02833},
+  archivePrefix = {arXiv},
+  primaryClass  = {quant-ph},
+  year          = {2026}
 }
 ```
 

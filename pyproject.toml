@@ -25,6 +25,7 @@ checks = ["numpy", "h5py", "zstandard"]
 [project.urls]
 Homepage = "https://github.com/OmniQ-QID-Lab/OmniQ"
 Documentation = "https://omniq-qid-lab.github.io/OmniQ/"
+Paper = "https://arxiv.org/abs/2611.02833"
 
 [tool.setuptools]
 packages = ["residual_agents"]

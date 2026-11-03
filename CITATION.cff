@@ -32,7 +32,7 @@ authors:
   - family-names: "Tao"
     given-names: "Dacheng"
 preferred-citation:
-  type: generic
+  type: article
   title: "Reimagining computational quantum research with AI scientists"
   authors:
     - family-names: "Du"
@@ -47,5 +47,9 @@ preferred-citation:
       given-names: "Kaining"
     - family-names: "Tao"
       given-names: "Dacheng"
-  notes: "Preprint"
+  journal: "arXiv preprint"
+  url: "https://arxiv.org/abs/2611.02833"
+  identifiers:
+    - type: other
+      value: "arXiv:2611.02833"
   year: 2026
