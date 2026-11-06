@@ -197,8 +197,9 @@ calls in between.
 - RA's own count misses DSH sub-agent sessions. One session in each of five runs started a sub-agent (#31, #45, #50,
   #51, #52); its tokens appear nowhere in the run folder. The paper's cost re-reads every DSH session file, sub-agent
   sessions included. The manifest gives both: `cost_usd` (the paper's basis) and `cost_usd_ledger` (RA's own record).
-- Over the 59 runs: 3,319 sessions, 25.7 billion tokens, a mean cost of US$5.56 per task on the paper's basis
-  (US$5.55 in RA's own record), and a mean wall time of 14.23 hours.
+- Over the 59 runs, one per task: 25.7 billion tokens, a mean cost of US$5.56 per task on the paper's basis
+  (US$5.55 in RA's own record), and a mean wall time of 14.23 hours. Each run has 10 to 195 agent sessions
+  (median 45), depending on how many reviews and repairs its sub-plans needed.
 
 ## 9. Following one sub-plan
 
